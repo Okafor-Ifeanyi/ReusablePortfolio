@@ -84,9 +84,8 @@ export async function POST(req: Request) {
 
     // soft delete — keeps their portfolio data intact
     // hard delete would be db.user.delete({ where: { clerkId: id } })
-    await prisma.user.update({
-      where:  { clerkId: id! },
-      data:   { deletedAt: new Date() }
+    await prisma.user.delete({
+      where:  { clerkId: id! }
     })
 
     console.log(`Deleted user: ${id}`)

@@ -1,0 +1,187 @@
+// -----------------------------------------------
+// Portfolio Platform — Database Schema (Prisma)
+// Auth managed by Clerk — no sessions/accounts
+// -----------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerkId    String   @unique @map("clerk_id") /// Clerk user ID — sync via webhook
+  email      String   @unique
+  username   String   @unique /// Used as portfolio URL slug
+  fullName   String?  @map("full_name")
+  avatarUrl  String?  @map("avatar_url")
+  role       String   @default("user") /// user | admin
+  plan       String   @default("free") /// free | pro
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  portfolio     Portfolio?
+  subscriptions Subscription[]
+
+  @@map("users")
+}
+
+model Subscription {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId               String   @map("user_id") @db.Uuid
+  stripeCustomerId     String   @unique @map("stripe_customer_id")
+  stripeSubscriptionId String   @unique @map("stripe_subscription_id")
+  plan                 String   /// free | pro
+  status               String   /// active | trialing | past_due | canceled
+  currentPeriodEnd     DateTime @map("current_period_end")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("subscriptions")
+}
+
+model Theme {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug            String    @unique /// Maps to /themes/[slug]/index.tsx
+  name            String
+  description     String?
+  previewImageUrl String?   @map("preview_image_url")
+  tier            String    @default("free") /// free | pro
+  isPublished     Boolean   @default(false) @map("is_published")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  portfolios Portfolio[]
+
+  @@map("themes")
+}
+
+model Portfolio {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @unique @map("user_id") @db.Uuid
+  themeId     String    @map("theme_id") @db.Uuid
+  slug        String    @unique /// Public URL — username.app.com/[slug]
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  user          User           @relation(fields: [userId], references: [id])
+  theme         Theme          @relation(fields: [themeId], references: [id])
+  hero          Hero?
+  experiences   Experience[]
+  projects      Project[]
+  skills        Skill[]
+  links         Link[]
+  domainMapping DomainMapping?
+
+  @@map("portfolios")
+}
+
+model Hero {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String    @unique @map("portfolio_id") @db.Uuid /// One hero per portfolio
+  headline    String
+  subheadline String?
+  bio         String?
+  avatarUrl   String?   @map("avatar_url")
+  location    String?
+  openToWork  Boolean   @default(false) @map("open_to_work")
+  ctaLabel    String?   @map("cta_label") /// e.g. Download CV
+  ctaUrl      String?   @map("cta_url")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@map("heros")
+}
+
+model Experience {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String    @map("portfolio_id") @db.Uuid
+  company     String
+  role        String
+  description String?
+  startDate   DateTime  @map("start_date") @db.Date
+  endDate     DateTime? @map("end_date") @db.Date /// null = current role
+  isCurrent   Boolean   @default(false) @map("is_current")
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@map("experiences")
+}
+
+model Project {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId   String    @map("portfolio_id") @db.Uuid
+  title         String
+  description   String?
+  coverImageUrl String?   @map("cover_image_url")
+  url           String?   /// Live project URL
+  repoUrl       String?   @map("repo_url") /// GitHub / GitLab URL
+  featured      Boolean   @default(false)
+  sortOrder     Int       @default(0) @map("sort_order")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  portfolio     Portfolio      @relation(fields: [portfolioId], references: [id])
+  projectSkills ProjectSkill[]
+
+  @@map("projects")
+}
+
+model Skill {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String  @map("portfolio_id") @db.Uuid
+  name        String
+  category    String? /// e.g. Frontend, Backend, Design, Tools
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  portfolio     Portfolio      @relation(fields: [portfolioId], references: [id])
+  projectSkills ProjectSkill[]
+
+  @@map("skills")
+}
+
+model ProjectSkill {
+  projectId String @map("project_id") @db.Uuid
+  skillId   String @map("skill_id") @db.Uuid
+
+  project Project @relation(fields: [projectId], references: [id])
+  skill   Skill   @relation(fields: [skillId], references: [id])
+
+  @@id([projectId, skillId])
+  @@map("project_skills")
+}
+
+model Link {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String  @map("portfolio_id") @db.Uuid
+  platform    String  /// github | linkedin | twitter | dribbble | email | other
+  label       String? /// Custom display label
+  url         String
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@map("links")
+}
+
+model DomainMapping {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId       String    @unique @map("portfolio_id") @db.Uuid
+  customDomain      String    @unique @map("custom_domain")
+  verified          Boolean   @default(false)
+  verificationToken String    @map("verification_token")
+  verifiedAt        DateTime? @map("verified_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@map("domain_mappings")
+}

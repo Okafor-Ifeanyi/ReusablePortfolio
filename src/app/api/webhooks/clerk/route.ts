@@ -1,4 +1,3 @@
-// app/api/webhooks/clerk/route.ts
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
@@ -13,27 +12,33 @@ export async function POST(req: Request) {
   }
 
   console.debug(">>>>>>> Webhook initiated")
-  // --- 1. Pull the Svix headers Clerk sends with every request ---
+
+  // 🔍 DEBUG 1: Check the secret (mask most of it)
+  console.debug(">>>>>>> SECRET preview:", WEBHOOK_SECRET.slice(0, 10) + "..." + WEBHOOK_SECRET.slice(-4))
+  console.debug(">>>>>>> SECRET length:", WEBHOOK_SECRET.length)
+  console.debug(">>>>>>> SECRET starts with whsec_:", WEBHOOK_SECRET.startsWith('whsec_'))
+
   const headerPayload = await headers()
   const svix_id        = headerPayload.get('svix-id')
   const svix_timestamp = headerPayload.get('svix-timestamp')
   const svix_signature = headerPayload.get('svix-signature')
 
-  // If any are missing, this is not a legitimate Clerk webhook
+  // 🔍 DEBUG 2: Check headers
+  console.debug(">>>>>>> svix-id:", svix_id)
+  console.debug(">>>>>>> svix-timestamp:", svix_timestamp)
+  console.debug(">>>>>>> svix-signature:", svix_signature?.slice(0, 30) + "...")
+
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return new Response('Missing svix headers', { status: 400 })
   }
 
-  // --- 2. Get the raw request body ---
-  // const payload = await req.json()
-  // const body = JSON.stringify(payload)
-
-  // ✅ raw text — never json()
   const body = await req.text()
 
-  // --- 3. Verify the signature ---
-  // This throws if the signature is invalid — proving the request
-  // genuinely came from Clerk and hasn't been tampered with
+  // 🔍 DEBUG 3: Check the body
+  console.debug(">>>>>>> Body length:", body.length)
+  console.debug(">>>>>>> Body preview:", body.slice(0, 100))
+  console.debug(">>>>>>> Body is valid JSON:", (() => { try { JSON.parse(body); return true } catch { return false } })())
+
   const wh = new Webhook(WEBHOOK_SECRET)
   let event: WebhookEvent
 
@@ -44,30 +49,17 @@ export async function POST(req: Request) {
       'svix-signature': svix_signature,
     }) as WebhookEvent
   } catch (err) {
-    console.error('Webhook signature verification failed:', err)
+    // 🔍 DEBUG 4: Log everything at the point of failure
+    console.error('>>>>>>> Verification failed')
+    console.error('>>>>>>> Secret used:', WEBHOOK_SECRET.slice(0, 10) + "...")
+    console.error('>>>>>>> Headers passed:', { 'svix-id': svix_id, 'svix-timestamp': svix_timestamp, 'svix-signature': svix_signature?.slice(0, 30) })
+    console.error('>>>>>>> Raw body (first 200 chars):', body.slice(0, 200))
+    console.error('>>>>>>> Error:', err)
     return new Response('Invalid signature', { status: 400 })
   }
 
-  // --- 4. Branch on event type and run the right DB operation ---
-  // const eventType = event.type
-  const { type, data } = JSON.parse(body)
+  const { type, data } = event
 
-  // if (eventType === 'user.created') {
-  //   const { id, email_addresses, username, first_name, last_name, image_url } = data
-  //   console.log(event)
-
-  //   await prisma.user.create({
-  //     data: {
-  //       clerkId:  id,
-  //       email:    email_addresses[0].email_address,
-  //       username: username ?? id, // fallback to clerk id if no username yet
-  //       fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
-  //       avatarUrl: image_url,
-  //     }
-  //   })
-
-  //   console.log(`Created user: ${id}`)
-  // }
   if (type === 'user.created') {
     await prisma.user.create({
       data: {
@@ -80,50 +72,21 @@ export async function POST(req: Request) {
     })
   }
 
-  // if (eventType === 'user.updated') {
-  //   const { id, email_addresses, username, first_name, last_name, image_url } = data
-
-  //   await prisma.user.update({
-  //     where: { clerkId: id },
-  //     data: {
-  //       email:    email_addresses[0].email_address,
-  //       username: username ?? undefined,
-  //       fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
-  //       avatarUrl: image_url,
-  //     }
-  //   })
-
-  //   console.log(`Updated user: ${id}`)
-  // }
   if (type === 'user.updated') {
     await prisma.user.update({
       where: { clerkId: data.id },
       data: {
         email:     data.email_addresses[0].email_address,
-        username:  data.username,
+        // username:  data.username,
         fullName:  `${data.first_name ?? ''} ${data.last_name ?? ''}`.trim(),
         avatarUrl: data.image_url ?? null,
       },
     })
   }
 
-
-  // if (eventType === 'user.deleted') {
-  //   const { id } = event.data
-
-  //   // soft delete — keeps their portfolio data intact
-  //   // hard delete would be db.user.delete({ where: { clerkId: id } })
-  //   await prisma.user.delete({
-  //     where:  { clerkId: id! }
-  //   })
-
-  //   console.log(`Deleted user: ${id}`)
-  // }
-
-  // --- 5. Tell Clerk the delivery succeeded ---
   if (type === 'user.deleted') {
     await prisma.user.delete({
-      where:  { clerkId: data.id },
+      where: { clerkId: data.id },
     })
   }
 

@@ -12,6 +12,7 @@ export async function POST(req: Request) {
     throw new Error('CLERK_WEBHOOK_SECRET is missing from .env.local')
   }
 
+  console.debug(">>>>>>> Webhook initiated")
   // --- 1. Pull the Svix headers Clerk sends with every request ---
   const headerPayload = await headers()
   const svix_id        = headerPayload.get('svix-id')
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.created') {
     const { id, email_addresses, username, first_name, last_name, image_url } = event.data
+    console.log(event)
 
     await prisma.user.create({
       data: {

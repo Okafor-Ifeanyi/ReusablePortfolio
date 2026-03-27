@@ -122,9 +122,8 @@ export async function POST(req: Request) {
 
   // --- 5. Tell Clerk the delivery succeeded ---
   if (type === 'user.deleted') {
-    await prisma.user.update({
+    await prisma.user.delete({
       where:  { clerkId: data.id },
-      data:   { deletedAt: new Date() },
     })
   }
 

@@ -25,8 +25,11 @@ export async function POST(req: Request) {
   }
 
   // --- 2. Get the raw request body ---
-  const payload = await req.json()
-  const body = JSON.stringify(payload)
+  // const payload = await req.json()
+  // const body = JSON.stringify(payload)
+
+  // ✅ raw text — never json()
+  const body = await req.text()
 
   // --- 3. Verify the signature ---
   // This throws if the signature is invalid — proving the request
@@ -46,53 +49,83 @@ export async function POST(req: Request) {
   }
 
   // --- 4. Branch on event type and run the right DB operation ---
-  const eventType = event.type
+  // const eventType = event.type
+  const { type, data } = JSON.parse(body)
 
-  if (eventType === 'user.created') {
-    const { id, email_addresses, username, first_name, last_name, image_url } = event.data
-    console.log(event)
+  // if (eventType === 'user.created') {
+  //   const { id, email_addresses, username, first_name, last_name, image_url } = data
+  //   console.log(event)
 
+  //   await prisma.user.create({
+  //     data: {
+  //       clerkId:  id,
+  //       email:    email_addresses[0].email_address,
+  //       username: username ?? id, // fallback to clerk id if no username yet
+  //       fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
+  //       avatarUrl: image_url,
+  //     }
+  //   })
+
+  //   console.log(`Created user: ${id}`)
+  // }
+  if (type === 'user.created') {
     await prisma.user.create({
       data: {
-        clerkId:  id,
-        email:    email_addresses[0].email_address,
-        username: username ?? id, // fallback to clerk id if no username yet
-        fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
-        avatarUrl: image_url,
-      }
+        clerkId:   data.id,
+        email:     data.email_addresses[0].email_address,
+        username:  data.username ?? data.id,
+        fullName:  `${data.first_name ?? ''} ${data.last_name ?? ''}`.trim(),
+        avatarUrl: data.image_url ?? null,
+      },
     })
-
-    console.log(`Created user: ${id}`)
   }
 
-  if (eventType === 'user.updated') {
-    const { id, email_addresses, username, first_name, last_name, image_url } = event.data
+  // if (eventType === 'user.updated') {
+  //   const { id, email_addresses, username, first_name, last_name, image_url } = data
 
+  //   await prisma.user.update({
+  //     where: { clerkId: id },
+  //     data: {
+  //       email:    email_addresses[0].email_address,
+  //       username: username ?? undefined,
+  //       fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
+  //       avatarUrl: image_url,
+  //     }
+  //   })
+
+  //   console.log(`Updated user: ${id}`)
+  // }
+  if (type === 'user.updated') {
     await prisma.user.update({
-      where: { clerkId: id },
+      where: { clerkId: data.id },
       data: {
-        email:    email_addresses[0].email_address,
-        username: username ?? undefined,
-        fullName: `${first_name ?? ''} ${last_name ?? ''}`.trim(),
-        avatarUrl: image_url,
-      }
+        email:     data.email_addresses[0].email_address,
+        username:  data.username,
+        fullName:  `${data.first_name ?? ''} ${data.last_name ?? ''}`.trim(),
+        avatarUrl: data.image_url ?? null,
+      },
     })
-
-    console.log(`Updated user: ${id}`)
   }
 
-  if (eventType === 'user.deleted') {
-    const { id } = event.data
 
-    // soft delete — keeps their portfolio data intact
-    // hard delete would be db.user.delete({ where: { clerkId: id } })
-    await prisma.user.delete({
-      where:  { clerkId: id! }
-    })
+  // if (eventType === 'user.deleted') {
+  //   const { id } = event.data
 
-    console.log(`Deleted user: ${id}`)
-  }
+  //   // soft delete — keeps their portfolio data intact
+  //   // hard delete would be db.user.delete({ where: { clerkId: id } })
+  //   await prisma.user.delete({
+  //     where:  { clerkId: id! }
+  //   })
+
+  //   console.log(`Deleted user: ${id}`)
+  // }
 
   // --- 5. Tell Clerk the delivery succeeded ---
+  if (type === 'user.deleted') {
+    await prisma.user.delete({
+      where:  { clerkId: data.id },
+    })
+  }
+
   return new Response('OK', { status: 200 })
 }

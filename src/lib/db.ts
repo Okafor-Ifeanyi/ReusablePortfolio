@@ -1,11 +1,11 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../../generated/prisma/client";
+import { DATABASE_URL } from "./constants";
 
-const prisma = new PrismaClient({
-  transactionOptions: {
-    isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-    maxWait: 5000, // default: 2000
-    timeout: 10000, // default: 5000
-  },
-})
+const connectionString = DATABASE_URL;
 
-export default prisma
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
+
+export { prisma };

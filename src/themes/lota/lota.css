@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-product: "Product Sans", "Google Sans", sans-serif;
+  --font-istok: "Istok Web", sans-serif;
+
+  --color-gold: #FFC659;
+  --color-gold-border: #F2A206;
+  --color-cream: #FFFAEF;
+  --color-off-white: #DFDFDF;
+  --color-muted: #99968F;
+
+  --color-dark-bg: #0F0F0F;
+  --color-card-bg: rgba(255,250,239,0.1);
+
+  --tracking-design: 0.02em;
+  --tracking-tag: 0.05em;
+}
+
+[data-theme="lota"] {
+  background: radial-gradient(
+    41.1% 20.35% at 50% 23.45%,
+    #1C1C1C 0%,
+    #0F0F0F 100%
+  );
+  color: var(--color-cream);
+}
+/* [data-theme="lota"] {
+  font-family: "Power Grotesk", "Public Sans", sans-serif;
+  background-color: red;
+  color: #05050D;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+
+  --bg: red;
+  --text: #05050d;
+  --muted: #636363;
+  --border: #636363;
+} */

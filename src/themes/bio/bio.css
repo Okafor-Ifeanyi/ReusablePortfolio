@@ -1,0 +1,100 @@
+/* themes/bio/bio.css
+
+/* @import "tailwindcss"; */
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap");
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-family-power: "Power Grotesk", "Public Sans", sans-serif;
+  --font-family-sans: "Public Sans", sans-serif;
+
+  --color-light-bg: #FCFCFF;
+  --color-light-text: #05050D;
+  --color-light-muted: #636363;
+  --color-light-border: #636363;
+
+  --color-dark-bg: #05050D;
+  --color-dark-text: #FCFCFF;
+  --color-dark-muted: #808080;
+  --color-dark-border: #808080;
+  --color-dark-card: #08080E;
+
+  --color-accent-light: #E1DFFF;
+  --color-accent-dark: #292933;
+
+  --tracking-design: 0.02em;
+  --tracking-tag: 0.05em;
+}
+
+/* ─── Bio theme scope ─────────────────────────────────── */
+/* All visual rules live here under [data-theme="bio"]    */
+/* so they cannot leak into other themes                   */
+
+[data-theme="bio"] {
+  font-family: "Power Grotesk", "Public Sans", sans-serif;
+  background-color: red;
+  color: #05050D;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+
+  --bg: #fcfcff;
+  --text: #05050d;
+  --muted: #636363;
+  --border: #636363;
+}
+
+[data-theme="bio"].dark,
+[data-theme="bio"] .dark {
+  background-color: #05050D;
+  color: #FCFCFF;
+
+  --bg: #05050d;
+  --text: #fcfcff;
+  --muted: #808080;
+  --border: #808080;
+}
+
+/* Scrollbar */
+[data-theme="bio"] ::-webkit-scrollbar { width: 6px; }
+[data-theme="bio"] ::-webkit-scrollbar-track { background: transparent; }
+[data-theme="bio"] ::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 99px;
+}
+
+/* Grain overlay */
+[data-theme="bio"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="bio"] .animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+[data-theme="bio"] .project-card { position: relative; }
+[data-theme="bio"] .project-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0;
+  height: 0.5px;
+  background: var(--text);
+  transition: width 0.4s ease;
+}
+[data-theme="bio"] .project-card:hover::after { width: 100%; }
+
+[data-theme="bio"] .skills-scroll::-webkit-scrollbar { display: none; }

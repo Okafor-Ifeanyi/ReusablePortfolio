@@ -2,21 +2,20 @@
 
 import { useTheme } from "./theme.provider";
 
-export default function Navbar() {
+export default function Navbar({ name }: { name: string | null }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-50 bg-light-bg dark:bg-dark-bg border-b border-light-border/10 dark:border-dark-border/10 backdrop-blur-sm transition-colors duration-300">
+    <header className="sticky top-0 z-50 bg-light-bg dark:bg-dark-bg  backdrop-blur-sm transition-colors duration-300">
       <nav className="max-w-360 mx-auto px-15 py-5.5 flex items-center justify-between">
         {/* Name */}
         <span className="text-[24px] tracking-design text-light-text dark:text-dark-text font-power leading-[150%]">
-          Ifeanyi Okafor
+          {name ?? "Portfolio"}
         </span>
 
         {/* Theme Toggle */}
         <button
           onClick={() => {
-            console.log("Clicked");
             toggleTheme();
           }}
           aria-label="Toggle theme"

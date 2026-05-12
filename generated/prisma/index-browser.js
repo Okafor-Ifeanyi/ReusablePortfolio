@@ -177,6 +177,7 @@ exports.Prisma.HeroScalarFieldEnum = {
   openToWork: 'openToWork',
   ctaLabel: 'ctaLabel',
   ctaUrl: 'ctaUrl',
+  yearsExperience: 'yearsExperience',
   updatedAt: 'updatedAt'
 };
 
@@ -197,10 +198,13 @@ exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
   portfolioId: 'portfolioId',
   title: 'title',
+  subtitle: 'subtitle',
   description: 'description',
   coverImageUrl: 'coverImageUrl',
   url: 'url',
   repoUrl: 'repoUrl',
+  duration: 'duration',
+  projectType: 'projectType',
   featured: 'featured',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt'

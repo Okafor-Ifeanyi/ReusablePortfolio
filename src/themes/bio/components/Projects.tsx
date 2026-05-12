@@ -1,63 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-interface Project {
-  name: string;
-  description: string;
-  tags: string[];
-  link?: string;
-  duration?: string;
-  type?: string;
-}
-
-const projects: Project[] = [
-  {
-    name: "Ventree",
-    description:
-      "A simple online tool that helps shop owners and attendants record sales, track goods, and know their profit or loss — all in one place.",
-    tags: ["Tailwind", "Typescript", "Redux", "Tanstack", "React", "EsLit"],
-    duration: "Nov '25 – Dec '25 (1 Month)",
-    type: "Collaboration",
-    link: "#",
-  },
-  {
-    name: "Cartle",
-    description:
-      "An e-commerce SaaS platform with real-time chat, background job processing, Redis caching, and Paystack subscription integration.",
-    tags: ["NestJs", "BullMQ", "Prisma", "Typescript", "Redis", "Socket.IO", "React", "PostgreSQL"],
-    duration: "Mar '24 – Present",
-    type: "Lead Engineer",
-    link: "#",
-  },
-  {
-    name: "Pivot",
-    description:
-      "A platform for rebuilding Africa through digital transformation initiatives and community engagement.",
-    tags: ["NestJs", "BullMQ", "Prisma", "Typescript", "Socket.IO", "PostgreSQL"],
-    duration: "2024",
-    type: "Collaboration",
-    link: "#",
-  },
-  {
-    name: "IDey",
-    description:
-      "A two-sided construction services marketplace featuring real-time chat, background job processing, and biometric identity verification.",
-    tags: ["NestJs", "BullMQ", "Prisma", "Typescript", "Socket.IO", "PostgreSQL"],
-    duration: "Aug '25 – Present",
-    type: "Solo",
-    link: "#",
-  },
-  {
-    name: "Furniture App",
-    description:
-      "A furniture e-commerce platform with real-time inventory management and order processing.",
-    tags: ["NestJs", "Typescript", "Socket.IO", "PostgreSQL"],
-    duration: "2024",
-    type: "Solo",
-    link: "#",
-  },
-];
+import { truncate } from "@/lib/utils";
+import type { BioProject } from "../index";
 
 function TechTag({ label }: { label: string }) {
   return (
@@ -70,114 +15,205 @@ function TechTag({ label }: { label: string }) {
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project }: { project: BioProject }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div
-      className="group border-b border-light-border/40 dark:border-dark-border/40 cursor-pointer"
+      className="group border-b border-light-border/40 dark:border-dark-border/40 cursor-pointer transition-colors hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
       onClick={() => setExpanded(!expanded)}
     >
       {/* Collapsed row */}
       <div className="flex flex-row items-center justify-between py-8 px-4 gap-4">
-        {/* Project name */}
-        <h3
-          className="text-light-text dark:text-dark-text group-hover:opacity-70 transition-opacity duration-200"
-          style={{ fontSize: "36px", lineHeight: "43px", fontWeight: 400 }}
-        >
-          {project.name}
-        </h3>
+        <div>
+          <h3
+            className="text-light-text dark:text-dark-text group-hover:opacity-70 transition-opacity duration-200"
+            style={{ fontSize: "36px", lineHeight: "43px", fontWeight: 400 }}
+          >
+            {project.title}
+          </h3>
+          {project.subtitle && (
+            <p
+              className="text-light-muted dark:text-dark-muted mt-1"
+              style={{ fontSize: "16px" }}
+            >
+              {truncate(project.subtitle, 50)}
+            </p>
+          )}
+        </div>
 
-        {/* Tags */}
         <div className="flex flex-wrap justify-end items-center gap-2.5">
-          {project.tags.map((tag) => (
-            <TechTag key={tag} label={tag} />
-          ))}
+          {(expanded ? project.skills : project.skills.slice(0, 7)).map(
+            (skill) => (
+              <TechTag key={skill} label={skill} />
+            ),
+          )}
+          {!expanded && project.skills.length > 7 && (
+            <span
+              className="inline-flex items-center px-2 py-1 text-light-muted dark:text-dark-muted whitespace-nowrap"
+              style={{
+                fontSize: "14px",
+                letterSpacing: "0.05em",
+                lineHeight: "150%",
+              }}
+            >
+              +{project.skills.length - 7} more
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Expanded panel */}
+      {/* Expanded panel — grid-rows animates to actual content height, no floating gaps */}
       <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          expanded ? "max-h-125 opacity-100" : "max-h-0 opacity-0"
+        className={`grid transition-all duration-500 ease-in-out ${
+          expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <div className="flex flex-col md:flex-row gap-8 px-4 pb-10">
-          {/* Preview placeholder (replace with actual screenshot) */}
-          <div className="w-full md:w-105 aspect-video bg-light-text/5 dark:bg-dark-text/5 rounded-lg flex items-center justify-center shrink-0 border border-light-border/20 dark:border-dark-border/20">
-            <span className="text-light-muted dark:text-dark-muted text-sm">
-              {project.name} preview
-            </span>
+        <div className="overflow-hidden">
+        <div className="flex flex-col md:flex-row gap-8 px-4 pt-2 pb-12">
+          {/* Cover image or placeholder */}
+          <div className="relative w-full md:w-105 aspect-video rounded-lg shrink-0 overflow-hidden border border-light-border/20 dark:border-dark-border/20">
+            {project.coverImageUrl ? (
+              <>
+                {/* Blurred fill — CSS background covers every pixel including corners */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 scale-110"
+                  style={{
+                    backgroundImage: `url(${project.coverImageUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    filter: "blur(20px)",
+                    opacity: 0.6,
+                  }}
+                />
+                {/* Foreground — fully visible, never exceeds the box */}
+                <img
+                  src={project.coverImageUrl}
+                  alt={project.title}
+                  className="relative z-10 w-full h-full object-contain"
+                />
+              </>
+            ) : (
+              <div className="w-full h-full bg-light-text/5 dark:bg-dark-text/5 flex items-center justify-center">
+                <span className="text-light-muted dark:text-dark-muted text-sm">
+                  {project.title} preview
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Details */}
           <div className="flex flex-col gap-4 justify-center flex-1">
-            <p
-              className="text-light-muted dark:text-dark-muted"
-              style={{ fontSize: "20px", lineHeight: "150%", fontWeight: 300 }}
-            >
-              {project.description}
-            </p>
+            {project.description && (
+              <p
+                className="text-light-muted dark:text-dark-muted"
+                style={{
+                  fontSize: "20px",
+                  lineHeight: "150%",
+                  fontWeight: 300,
+                }}
+              >
+                {project.description}
+              </p>
+            )}
 
-            {/* Tags repeated */}
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <TechTag key={tag} label={tag} />
-              ))}
-            </div>
+            {project.skills.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {project.skills.map((skill) => (
+                  <TechTag key={skill} label={skill} />
+                ))}
+              </div>
+            )}
 
-            {/* Meta info */}
+            {/* Meta */}
             <div className="flex flex-col gap-2">
               {project.duration && (
-                <div className="flex items-center gap-2 text-light-muted dark:text-dark-muted" style={{ fontSize: "16px" }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <div
+                  className="flex items-center gap-2 text-light-muted dark:text-dark-muted"
+                  style={{ fontSize: "16px" }}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
                   </svg>
                   {project.duration}
                 </div>
               )}
-              {project.type && (
-                <div className="flex items-center gap-2 text-light-muted dark:text-dark-muted" style={{ fontSize: "16px" }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              {project.projectType && (
+                <div
+                  className="flex items-center gap-2 text-light-muted dark:text-dark-muted"
+                  style={{ fontSize: "16px" }}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
-                  {project.type}
+                  {project.projectType}
                 </div>
               )}
             </div>
 
-            {/* CTA */}
-            {project.link && (
-              <div className="flex justify-end mt-2">
+            {/* Links */}
+            <div className="flex items-center gap-4 mt-2">
+              {project.url && (
                 <a
-                  href={project.link}
+                  href={project.url}
                   onClick={(e) => e.stopPropagation()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 bg-light-text dark:bg-dark-text text-light-bg dark:text-dark-bg rounded-sm font-power transition-opacity hover:opacity-80"
                   style={{ fontSize: "18px" }}
                 >
                   Live Product
                 </a>
-              </div>
-            )}
+              )}
+              {project.repoUrl && (
+                <a
+                  href={project.repoUrl}
+                  onClick={(e) => e.stopPropagation()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-sm font-power transition-opacity hover:opacity-70"
+                  style={{ fontSize: "18px" }}
+                >
+                  Source Code
+                </a>
+              )}
+            </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: BioProject[] }) {
+  if (projects.length === 0) return null;
+
   return (
     <section
       id="projects"
       className="bg-light-bg dark:bg-dark-bg transition-colors duration-300 py-16"
     >
       <div className="max-w-360 mx-auto px-15">
-        {/* Section header */}
         <div className="mb-8">
           <h2
             className="text-light-text dark:text-dark-text tracking-design"
@@ -187,10 +223,9 @@ export default function Projects() {
           </h2>
         </div>
 
-        {/* Project list */}
         <div className="flex flex-col px-4">
           {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>

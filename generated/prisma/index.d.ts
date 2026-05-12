@@ -6639,8 +6639,18 @@ export namespace Prisma {
 
   export type AggregateHero = {
     _count: HeroCountAggregateOutputType | null
+    _avg: HeroAvgAggregateOutputType | null
+    _sum: HeroSumAggregateOutputType | null
     _min: HeroMinAggregateOutputType | null
     _max: HeroMaxAggregateOutputType | null
+  }
+
+  export type HeroAvgAggregateOutputType = {
+    yearsExperience: number | null
+  }
+
+  export type HeroSumAggregateOutputType = {
+    yearsExperience: number | null
   }
 
   export type HeroMinAggregateOutputType = {
@@ -6654,6 +6664,7 @@ export namespace Prisma {
     openToWork: boolean | null
     ctaLabel: string | null
     ctaUrl: string | null
+    yearsExperience: number | null
     updatedAt: Date | null
   }
 
@@ -6668,6 +6679,7 @@ export namespace Prisma {
     openToWork: boolean | null
     ctaLabel: string | null
     ctaUrl: string | null
+    yearsExperience: number | null
     updatedAt: Date | null
   }
 
@@ -6682,10 +6694,19 @@ export namespace Prisma {
     openToWork: number
     ctaLabel: number
     ctaUrl: number
+    yearsExperience: number
     updatedAt: number
     _all: number
   }
 
+
+  export type HeroAvgAggregateInputType = {
+    yearsExperience?: true
+  }
+
+  export type HeroSumAggregateInputType = {
+    yearsExperience?: true
+  }
 
   export type HeroMinAggregateInputType = {
     id?: true
@@ -6698,6 +6719,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    yearsExperience?: true
     updatedAt?: true
   }
 
@@ -6712,6 +6734,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    yearsExperience?: true
     updatedAt?: true
   }
 
@@ -6726,6 +6749,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    yearsExperience?: true
     updatedAt?: true
     _all?: true
   }
@@ -6768,6 +6792,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: HeroAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: HeroSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: HeroMinAggregateInputType
@@ -6798,6 +6834,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: HeroCountAggregateInputType | true
+    _avg?: HeroAvgAggregateInputType
+    _sum?: HeroSumAggregateInputType
     _min?: HeroMinAggregateInputType
     _max?: HeroMaxAggregateInputType
   }
@@ -6813,8 +6851,11 @@ export namespace Prisma {
     openToWork: boolean
     ctaLabel: string | null
     ctaUrl: string | null
+    yearsExperience: number | null
     updatedAt: Date
     _count: HeroCountAggregateOutputType | null
+    _avg: HeroAvgAggregateOutputType | null
+    _sum: HeroSumAggregateOutputType | null
     _min: HeroMinAggregateOutputType | null
     _max: HeroMaxAggregateOutputType | null
   }
@@ -6844,6 +6885,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hero"]>
@@ -6859,6 +6901,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hero"]>
@@ -6874,6 +6917,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["hero"]>
@@ -6889,10 +6933,11 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    yearsExperience?: boolean
     updatedAt?: boolean
   }
 
-  export type HeroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "headline" | "subheadline" | "bio" | "avatarUrl" | "location" | "openToWork" | "ctaLabel" | "ctaUrl" | "updatedAt", ExtArgs["result"]["hero"]>
+  export type HeroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "headline" | "subheadline" | "bio" | "avatarUrl" | "location" | "openToWork" | "ctaLabel" | "ctaUrl" | "yearsExperience" | "updatedAt", ExtArgs["result"]["hero"]>
   export type HeroInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
   }
@@ -6925,6 +6970,10 @@ export namespace Prisma {
        */
       ctaLabel: string | null
       ctaUrl: string | null
+      /**
+       * Manual override shown as "N+ years"
+       */
+      yearsExperience: number | null
       updatedAt: Date
     }, ExtArgs["result"]["hero"]>
     composites: {}
@@ -7360,6 +7409,7 @@ export namespace Prisma {
     readonly openToWork: FieldRef<"Hero", 'Boolean'>
     readonly ctaLabel: FieldRef<"Hero", 'String'>
     readonly ctaUrl: FieldRef<"Hero", 'String'>
+    readonly yearsExperience: FieldRef<"Hero", 'Int'>
     readonly updatedAt: FieldRef<"Hero", 'DateTime'>
   }
     
@@ -8969,10 +9019,13 @@ export namespace Prisma {
     id: string | null
     portfolioId: string | null
     title: string | null
+    subtitle: string | null
     description: string | null
     coverImageUrl: string | null
     url: string | null
     repoUrl: string | null
+    duration: string | null
+    projectType: string | null
     featured: boolean | null
     sortOrder: number | null
     createdAt: Date | null
@@ -8982,10 +9035,13 @@ export namespace Prisma {
     id: string | null
     portfolioId: string | null
     title: string | null
+    subtitle: string | null
     description: string | null
     coverImageUrl: string | null
     url: string | null
     repoUrl: string | null
+    duration: string | null
+    projectType: string | null
     featured: boolean | null
     sortOrder: number | null
     createdAt: Date | null
@@ -8995,10 +9051,13 @@ export namespace Prisma {
     id: number
     portfolioId: number
     title: number
+    subtitle: number
     description: number
     coverImageUrl: number
     url: number
     repoUrl: number
+    duration: number
+    projectType: number
     featured: number
     sortOrder: number
     createdAt: number
@@ -9018,10 +9077,13 @@ export namespace Prisma {
     id?: true
     portfolioId?: true
     title?: true
+    subtitle?: true
     description?: true
     coverImageUrl?: true
     url?: true
     repoUrl?: true
+    duration?: true
+    projectType?: true
     featured?: true
     sortOrder?: true
     createdAt?: true
@@ -9031,10 +9093,13 @@ export namespace Prisma {
     id?: true
     portfolioId?: true
     title?: true
+    subtitle?: true
     description?: true
     coverImageUrl?: true
     url?: true
     repoUrl?: true
+    duration?: true
+    projectType?: true
     featured?: true
     sortOrder?: true
     createdAt?: true
@@ -9044,10 +9109,13 @@ export namespace Prisma {
     id?: true
     portfolioId?: true
     title?: true
+    subtitle?: true
     description?: true
     coverImageUrl?: true
     url?: true
     repoUrl?: true
+    duration?: true
+    projectType?: true
     featured?: true
     sortOrder?: true
     createdAt?: true
@@ -9144,10 +9212,13 @@ export namespace Prisma {
     id: string
     portfolioId: string
     title: string
+    subtitle: string | null
     description: string | null
     coverImageUrl: string | null
     url: string | null
     repoUrl: string | null
+    duration: string | null
+    projectType: string | null
     featured: boolean
     sortOrder: number
     createdAt: Date
@@ -9176,10 +9247,13 @@ export namespace Prisma {
     id?: boolean
     portfolioId?: boolean
     title?: boolean
+    subtitle?: boolean
     description?: boolean
     coverImageUrl?: boolean
     url?: boolean
     repoUrl?: boolean
+    duration?: boolean
+    projectType?: boolean
     featured?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -9192,10 +9266,13 @@ export namespace Prisma {
     id?: boolean
     portfolioId?: boolean
     title?: boolean
+    subtitle?: boolean
     description?: boolean
     coverImageUrl?: boolean
     url?: boolean
     repoUrl?: boolean
+    duration?: boolean
+    projectType?: boolean
     featured?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -9206,10 +9283,13 @@ export namespace Prisma {
     id?: boolean
     portfolioId?: boolean
     title?: boolean
+    subtitle?: boolean
     description?: boolean
     coverImageUrl?: boolean
     url?: boolean
     repoUrl?: boolean
+    duration?: boolean
+    projectType?: boolean
     featured?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -9220,16 +9300,19 @@ export namespace Prisma {
     id?: boolean
     portfolioId?: boolean
     title?: boolean
+    subtitle?: boolean
     description?: boolean
     coverImageUrl?: boolean
     url?: boolean
     repoUrl?: boolean
+    duration?: boolean
+    projectType?: boolean
     featured?: boolean
     sortOrder?: boolean
     createdAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "title" | "description" | "coverImageUrl" | "url" | "repoUrl" | "featured" | "sortOrder" | "createdAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "title" | "subtitle" | "description" | "coverImageUrl" | "url" | "repoUrl" | "duration" | "projectType" | "featured" | "sortOrder" | "createdAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
     projectSkills?: boolean | Project$projectSkillsArgs<ExtArgs>
@@ -9252,6 +9335,10 @@ export namespace Prisma {
       id: string
       portfolioId: string
       title: string
+      /**
+       * Short tagline shown in the collapsed row
+       */
+      subtitle: string | null
       description: string | null
       coverImageUrl: string | null
       /**
@@ -9262,6 +9349,14 @@ export namespace Prisma {
        * GitHub / GitLab URL
        */
       repoUrl: string | null
+      /**
+       * e.g. "Mar 2024 – Present"
+       */
+      duration: string | null
+      /**
+       * Solo | Lead Engineer | Collaboration
+       */
+      projectType: string | null
       featured: boolean
       sortOrder: number
       createdAt: Date
@@ -9693,10 +9788,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Project", 'String'>
     readonly portfolioId: FieldRef<"Project", 'String'>
     readonly title: FieldRef<"Project", 'String'>
+    readonly subtitle: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly coverImageUrl: FieldRef<"Project", 'String'>
     readonly url: FieldRef<"Project", 'String'>
     readonly repoUrl: FieldRef<"Project", 'String'>
+    readonly duration: FieldRef<"Project", 'String'>
+    readonly projectType: FieldRef<"Project", 'String'>
     readonly featured: FieldRef<"Project", 'Boolean'>
     readonly sortOrder: FieldRef<"Project", 'Int'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
@@ -14593,6 +14691,7 @@ export namespace Prisma {
     openToWork: 'openToWork',
     ctaLabel: 'ctaLabel',
     ctaUrl: 'ctaUrl',
+    yearsExperience: 'yearsExperience',
     updatedAt: 'updatedAt'
   };
 
@@ -14619,10 +14718,13 @@ export namespace Prisma {
     id: 'id',
     portfolioId: 'portfolioId',
     title: 'title',
+    subtitle: 'subtitle',
     description: 'description',
     coverImageUrl: 'coverImageUrl',
     url: 'url',
     repoUrl: 'repoUrl',
+    duration: 'duration',
+    projectType: 'projectType',
     featured: 'featured',
     sortOrder: 'sortOrder',
     createdAt: 'createdAt'
@@ -15098,6 +15200,7 @@ export namespace Prisma {
     openToWork?: BoolFilter<"Hero"> | boolean
     ctaLabel?: StringNullableFilter<"Hero"> | string | null
     ctaUrl?: StringNullableFilter<"Hero"> | string | null
+    yearsExperience?: IntNullableFilter<"Hero"> | number | null
     updatedAt?: DateTimeFilter<"Hero"> | Date | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
   }
@@ -15113,6 +15216,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaUrl?: SortOrderInput | SortOrder
+    yearsExperience?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
     portfolio?: PortfolioOrderByWithRelationInput
   }
@@ -15131,6 +15235,7 @@ export namespace Prisma {
     openToWork?: BoolFilter<"Hero"> | boolean
     ctaLabel?: StringNullableFilter<"Hero"> | string | null
     ctaUrl?: StringNullableFilter<"Hero"> | string | null
+    yearsExperience?: IntNullableFilter<"Hero"> | number | null
     updatedAt?: DateTimeFilter<"Hero"> | Date | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
   }, "id" | "portfolioId">
@@ -15146,10 +15251,13 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaUrl?: SortOrderInput | SortOrder
+    yearsExperience?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
     _count?: HeroCountOrderByAggregateInput
+    _avg?: HeroAvgOrderByAggregateInput
     _max?: HeroMaxOrderByAggregateInput
     _min?: HeroMinOrderByAggregateInput
+    _sum?: HeroSumOrderByAggregateInput
   }
 
   export type HeroScalarWhereWithAggregatesInput = {
@@ -15166,6 +15274,7 @@ export namespace Prisma {
     openToWork?: BoolWithAggregatesFilter<"Hero"> | boolean
     ctaLabel?: StringNullableWithAggregatesFilter<"Hero"> | string | null
     ctaUrl?: StringNullableWithAggregatesFilter<"Hero"> | string | null
+    yearsExperience?: IntNullableWithAggregatesFilter<"Hero"> | number | null
     updatedAt?: DateTimeWithAggregatesFilter<"Hero"> | Date | string
   }
 
@@ -15258,10 +15367,13 @@ export namespace Prisma {
     id?: UuidFilter<"Project"> | string
     portfolioId?: UuidFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
+    subtitle?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     coverImageUrl?: StringNullableFilter<"Project"> | string | null
     url?: StringNullableFilter<"Project"> | string | null
     repoUrl?: StringNullableFilter<"Project"> | string | null
+    duration?: StringNullableFilter<"Project"> | string | null
+    projectType?: StringNullableFilter<"Project"> | string | null
     featured?: BoolFilter<"Project"> | boolean
     sortOrder?: IntFilter<"Project"> | number
     createdAt?: DateTimeFilter<"Project"> | Date | string
@@ -15273,10 +15385,13 @@ export namespace Prisma {
     id?: SortOrder
     portfolioId?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     coverImageUrl?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
     repoUrl?: SortOrderInput | SortOrder
+    duration?: SortOrderInput | SortOrder
+    projectType?: SortOrderInput | SortOrder
     featured?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -15291,10 +15406,13 @@ export namespace Prisma {
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     portfolioId?: UuidFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
+    subtitle?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     coverImageUrl?: StringNullableFilter<"Project"> | string | null
     url?: StringNullableFilter<"Project"> | string | null
     repoUrl?: StringNullableFilter<"Project"> | string | null
+    duration?: StringNullableFilter<"Project"> | string | null
+    projectType?: StringNullableFilter<"Project"> | string | null
     featured?: BoolFilter<"Project"> | boolean
     sortOrder?: IntFilter<"Project"> | number
     createdAt?: DateTimeFilter<"Project"> | Date | string
@@ -15306,10 +15424,13 @@ export namespace Prisma {
     id?: SortOrder
     portfolioId?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     coverImageUrl?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
     repoUrl?: SortOrderInput | SortOrder
+    duration?: SortOrderInput | SortOrder
+    projectType?: SortOrderInput | SortOrder
     featured?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -15327,10 +15448,13 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"Project"> | string
     portfolioId?: UuidWithAggregatesFilter<"Project"> | string
     title?: StringWithAggregatesFilter<"Project"> | string
+    subtitle?: StringNullableWithAggregatesFilter<"Project"> | string | null
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     coverImageUrl?: StringNullableWithAggregatesFilter<"Project"> | string | null
     url?: StringNullableWithAggregatesFilter<"Project"> | string | null
     repoUrl?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    duration?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    projectType?: StringNullableWithAggregatesFilter<"Project"> | string | null
     featured?: BoolWithAggregatesFilter<"Project"> | boolean
     sortOrder?: IntWithAggregatesFilter<"Project"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -15932,6 +16056,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    yearsExperience?: number | null
     updatedAt?: Date | string
     portfolio: PortfolioCreateNestedOneWithoutHeroInput
   }
@@ -15947,6 +16072,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    yearsExperience?: number | null
     updatedAt?: Date | string
   }
 
@@ -15960,6 +16086,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     portfolio?: PortfolioUpdateOneRequiredWithoutHeroNestedInput
   }
@@ -15975,6 +16102,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15989,6 +16117,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    yearsExperience?: number | null
     updatedAt?: Date | string
   }
 
@@ -16002,6 +16131,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16016,6 +16146,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16112,10 +16243,13 @@ export namespace Prisma {
   export type ProjectCreateInput = {
     id?: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -16127,10 +16261,13 @@ export namespace Prisma {
     id?: string
     portfolioId: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -16140,10 +16277,13 @@ export namespace Prisma {
   export type ProjectUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16155,10 +16295,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     portfolioId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16169,10 +16312,13 @@ export namespace Prisma {
     id?: string
     portfolioId: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -16181,10 +16327,13 @@ export namespace Prisma {
   export type ProjectUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16194,10 +16343,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     portfolioId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16811,6 +16963,17 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type PortfolioScalarRelationFilter = {
     is?: PortfolioWhereInput
     isNot?: PortfolioWhereInput
@@ -16827,7 +16990,12 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    yearsExperience?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type HeroAvgOrderByAggregateInput = {
+    yearsExperience?: SortOrder
   }
 
   export type HeroMaxOrderByAggregateInput = {
@@ -16841,6 +17009,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    yearsExperience?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -16855,7 +17024,28 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    yearsExperience?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type HeroSumOrderByAggregateInput = {
+    yearsExperience?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -16946,10 +17136,13 @@ export namespace Prisma {
     id?: SortOrder
     portfolioId?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
     description?: SortOrder
     coverImageUrl?: SortOrder
     url?: SortOrder
     repoUrl?: SortOrder
+    duration?: SortOrder
+    projectType?: SortOrder
     featured?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -16963,10 +17156,13 @@ export namespace Prisma {
     id?: SortOrder
     portfolioId?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
     description?: SortOrder
     coverImageUrl?: SortOrder
     url?: SortOrder
     repoUrl?: SortOrder
+    duration?: SortOrder
+    projectType?: SortOrder
     featured?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -16976,10 +17172,13 @@ export namespace Prisma {
     id?: SortOrder
     portfolioId?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
     description?: SortOrder
     coverImageUrl?: SortOrder
     url?: SortOrder
     repoUrl?: SortOrder
+    duration?: SortOrder
+    projectType?: SortOrder
     featured?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -17532,6 +17731,14 @@ export namespace Prisma {
     connect?: PortfolioWhereUniqueInput
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type PortfolioUpdateOneRequiredWithoutHeroNestedInput = {
     create?: XOR<PortfolioCreateWithoutHeroInput, PortfolioUncheckedCreateWithoutHeroInput>
     connectOrCreate?: PortfolioCreateOrConnectWithoutHeroInput
@@ -17900,6 +18107,33 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -18279,6 +18513,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    yearsExperience?: number | null
     updatedAt?: Date | string
   }
 
@@ -18292,6 +18527,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    yearsExperience?: number | null
     updatedAt?: Date | string
   }
 
@@ -18337,10 +18573,13 @@ export namespace Prisma {
   export type ProjectCreateWithoutPortfolioInput = {
     id?: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -18350,10 +18589,13 @@ export namespace Prisma {
   export type ProjectUncheckedCreateWithoutPortfolioInput = {
     id?: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -18538,6 +18780,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18551,6 +18794,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18609,10 +18853,13 @@ export namespace Prisma {
     id?: UuidFilter<"Project"> | string
     portfolioId?: UuidFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
+    subtitle?: StringNullableFilter<"Project"> | string | null
     description?: StringNullableFilter<"Project"> | string | null
     coverImageUrl?: StringNullableFilter<"Project"> | string | null
     url?: StringNullableFilter<"Project"> | string | null
     repoUrl?: StringNullableFilter<"Project"> | string | null
+    duration?: StringNullableFilter<"Project"> | string | null
+    projectType?: StringNullableFilter<"Project"> | string | null
     featured?: BoolFilter<"Project"> | boolean
     sortOrder?: IntFilter<"Project"> | number
     createdAt?: DateTimeFilter<"Project"> | Date | string
@@ -19085,10 +19332,13 @@ export namespace Prisma {
   export type ProjectCreateWithoutProjectSkillsInput = {
     id?: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -19099,10 +19349,13 @@ export namespace Prisma {
     id?: string
     portfolioId: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -19148,10 +19401,13 @@ export namespace Prisma {
   export type ProjectUpdateWithoutProjectSkillsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19162,10 +19418,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     portfolioId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19457,10 +19716,13 @@ export namespace Prisma {
   export type ProjectCreateManyPortfolioInput = {
     id?: string
     title: string
+    subtitle?: string | null
     description?: string | null
     coverImageUrl?: string | null
     url?: string | null
     repoUrl?: string | null
+    duration?: string | null
+    projectType?: string | null
     featured?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -19520,10 +19782,13 @@ export namespace Prisma {
   export type ProjectUpdateWithoutPortfolioInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19533,10 +19798,13 @@ export namespace Prisma {
   export type ProjectUncheckedUpdateWithoutPortfolioInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19546,10 +19814,13 @@ export namespace Prisma {
   export type ProjectUncheckedUpdateManyWithoutPortfolioInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
     repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    duration?: NullableStringFieldUpdateOperationsInput | string | null
+    projectType?: NullableStringFieldUpdateOperationsInput | string | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

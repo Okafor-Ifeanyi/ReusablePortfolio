@@ -1,66 +1,24 @@
-/* themes/bio/bio.css
-
-/* @import "tailwindcss"; */
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap");
-
-@variant dark (&:where(.dark, .dark *));
-
-@theme {
-  --font-family-power: "Power Grotesk", "Public Sans", sans-serif;
-  --font-family-sans: "Public Sans", sans-serif;
-
-  --color-light-bg: #FCFCFF;
-  --color-light-text: #05050D;
-  --color-light-muted: #636363;
-  --color-light-border: #636363;
-
-  --color-dark-bg: #05050D;
-  --color-dark-text: #FCFCFF;
-  --color-dark-muted: #808080;
-  --color-dark-border: #808080;
-  --color-dark-card: #08080E;
-
-  --color-accent-light: #E1DFFF;
-  --color-accent-dark: #292933;
-
-  --tracking-design: 0.02em;
-  --tracking-tag: 0.05em;
-}
-
-/* ─── Bio theme scope ─────────────────────────────────── */
-/* All visual rules live here under [data-theme="bio"]    */
-/* so they cannot leak into other themes                   */
+/* bio.css — scoped rules for [data-theme="bio"] only */
 
 [data-theme="bio"] {
-  font-family: "Power Grotesk", "Public Sans", sans-serif;
-  background-color: red;
-  color: #05050D;
+  font-family: var(--font-family-power);
+  color: var(--color-light-text);
+  background-color: var(--color-light-bg);
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   scroll-behavior: smooth;
-
-  --bg: #fcfcff;
-  --text: #05050d;
-  --muted: #636363;
-  --border: #636363;
 }
 
-[data-theme="bio"].dark,
-[data-theme="bio"] .dark {
-  background-color: #05050D;
-  color: #FCFCFF;
-
-  --bg: #05050d;
-  --text: #fcfcff;
-  --muted: #808080;
-  --border: #808080;
+.dark [data-theme="bio"] {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
 }
 
 /* Scrollbar */
 [data-theme="bio"] ::-webkit-scrollbar { width: 6px; }
 [data-theme="bio"] ::-webkit-scrollbar-track { background: transparent; }
 [data-theme="bio"] ::-webkit-scrollbar-thumb {
-  background: var(--muted);
+  background: var(--color-light-muted);
   border-radius: 99px;
 }
 
@@ -75,10 +33,9 @@
   opacity: 0.4;
 }
 
-/* Animations */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 [data-theme="bio"] .animate-fade-in-up {
@@ -92,7 +49,7 @@
   bottom: 0; left: 0;
   width: 0;
   height: 0.5px;
-  background: var(--text);
+  background: var(--color-light-text);
   transition: width 0.4s ease;
 }
 [data-theme="bio"] .project-card:hover::after { width: 100%; }

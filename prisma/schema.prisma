@@ -90,10 +90,11 @@ model Hero {
   bio         String?
   avatarUrl   String?   @map("avatar_url")
   location    String?
-  openToWork  Boolean   @default(false) @map("open_to_work")
-  ctaLabel    String?   @map("cta_label") /// e.g. Download CV
-  ctaUrl      String?   @map("cta_url")
-  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  openToWork       Boolean   @default(false) @map("open_to_work")
+  ctaLabel         String?   @map("cta_label") /// e.g. Download CV
+  ctaUrl           String?   @map("cta_url")
+  yearsExperience  Int?      @map("years_experience") /// Manual override shown as "N+ years"
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at")
 
   portfolio Portfolio @relation(fields: [portfolioId], references: [id])
 
@@ -121,10 +122,13 @@ model Project {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   portfolioId   String    @map("portfolio_id") @db.Uuid
   title         String
+  subtitle      String?   /// Short tagline shown in the collapsed row
   description   String?
   coverImageUrl String?   @map("cover_image_url")
   url           String?   /// Live project URL
   repoUrl       String?   @map("repo_url") /// GitHub / GitLab URL
+  duration      String?   /// e.g. "Mar 2024 – Present"
+  projectType   String?   @map("project_type") /// Solo | Lead Engineer | Collaboration
   featured      Boolean   @default(false)
   sortOrder     Int       @default(0) @map("sort_order")
   createdAt     DateTime  @default(now()) @map("created_at")
@@ -152,8 +156,8 @@ model ProjectSkill {
   projectId String @map("project_id") @db.Uuid
   skillId   String @map("skill_id") @db.Uuid
 
-  project Project @relation(fields: [projectId], references: [id])
-  skill   Skill   @relation(fields: [skillId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([projectId, skillId])
   @@map("project_skills")

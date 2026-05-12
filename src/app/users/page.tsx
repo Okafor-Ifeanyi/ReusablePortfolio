@@ -1,12 +1,10 @@
-import Link from "next/link";
-import React from "react";
+import Home from "@/themes/bio";
 
 const page = () => {
   return (
-    <section>
-      <div>page</div>
-      <Link href="/users/new">New Users</Link>
-    </section>
+    <>
+      <Home />
+    </>
   );
 };
 

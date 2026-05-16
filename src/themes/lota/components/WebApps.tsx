@@ -1,142 +1,54 @@
 "use client";
 import SectionHeader from "./SectionHeader";
+import { BORDER } from "./ServicesGrid";
+import type { LotaProject } from "../index";
 
-interface WebAppCard {
-  name: string;
-  description: string;
-  tags: string[];
-  duration: string;
-  type: string;
-  href?: string;
-}
+const FALLBACK_BG = ["#073E1E", "#0A1628", "#1A0A0A", "#0E021D", "#0A0A0A", "#1A1A2E"];
 
-const webApps: WebAppCard[] = [
-  {
-    name: "Ventree",
-    description: "Ventree is a simple online tool that helps shop owners and attendants record sales, track goods, and know their profit or loss — all in one place.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-  {
-    name: "Trove",
-    description: "A modern savings and investment platform helping users track, grow and manage their financial goals effortlessly.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-  {
-    name: "Pivot",
-    description: "Rebuilding Africa from within — a platform for community-driven transformation and social impact initiatives.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-  {
-    name: "BlvckVerze",
-    description: "A premium creative agency portfolio showcasing bold design thinking and visual storytelling across industries.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-  {
-    name: "Simbi",
-    description: "An AI-powered study companion that helps students learn smarter, track progress, and stay motivated.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-  {
-    name: "Learnify",
-    description: "An intelligent learning tool that personalises educational content for every student's unique journey.",
-    tags: ["Responsive", "Branding", "Prototyping", "Ideation", "Strategy", "User Research", "Business Modelling"],
-    duration: "Nov '25 - Dec '25 (1 Month)",
-    type: "Collaboration",
-    href: "#",
-  },
-];
+export default function WebApps({ projects, username }: { projects: LotaProject[]; username: string }) {
+  const items = projects.length > 0 ? projects : [];
 
-function Tag({ label }: { label: string }) {
-  return (
-    <span className="px-2 py-1 border border-muted rounded-[2px] text-muted text-[14px] font-light tracking-wider">
-      {label}
-    </span>
-  );
-}
-
-export default function WebApps() {
   return (
     <section id="webapps" className="w-full">
-      <SectionHeader title="WebApps" viewAllHref="#" />
+      <SectionHeader title="Web Apps" viewAllHref={`/${username}/projects?type=webapps`} />
 
-      <div className="flex flex-col gap-0 w-full">
-        {webApps.map((app, i) => (
-          <div
-            key={i}
-            className="flex gap-6 py-4 border-b border-[#646464]"
-            style={{ minHeight: "366px" }}
-          >
-            {/* Screenshot preview */}
-            <div
-              className="flex-shrink-0 rounded-lg overflow-hidden bg-white/5 flex items-center justify-center"
-              style={{ width: "468px", height: "334px" }}
-            >
-              {/* Replace with actual screenshot: <img src="..." /> */}
-              <div className="w-full h-full bg-gradient-to-br from-white/10 to-transparent flex items-center justify-center">
-                <span className="text-muted text-sm">{app.name} screenshot</span>
-              </div>
-            </div>
-
-            {/* Details */}
-            <div className="flex flex-col flex-1 gap-4 py-2">
-              <h3 className="text-cream font-medium text-[24px] leading-[29px]">{app.name}</h3>
-              <p className="text-[#DFDFDF] text-[16px] leading-[150%]">{app.description}</p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-[10px]">
-                {app.tags.map((tag) => (
-                  <Tag key={tag} label={tag} />
-                ))}
-              </div>
-
-              {/* Meta */}
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="9" stroke="#646464" strokeWidth="1.5" />
-                    <path d="M12 7v5l3 2" stroke="#646464" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                  <span className="text-cream text-[16px]">{app.duration}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#646464" strokeWidth="1.5" strokeLinecap="round" />
-                    <circle cx="9" cy="7" r="4" stroke="#646464" strokeWidth="1.5" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#646464" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                  <span className="text-cream text-[16px]">{app.type}</span>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="flex justify-end mt-auto">
-                <a
-                  href={app.href}
-                  className="px-6 py-[5px] rounded-full text-cream text-[18px] border border-white/20 hover:bg-white/10 transition-colors"
-                  style={{ filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.5))" }}
+      {items.length === 0 ? (
+        <p className="text-lota-muted text-sm py-4">No web apps added yet.</p>
+      ) : (
+        <div className="flex gap-7 w-full">
+          {items.map((project, i) => (
+            <div key={project.id} className="flex flex-col flex-1 rounded-xl p-px shrink-0" style={{ minWidth: 0 }}>
+              <div className="flex flex-col gap-4 p-[15px] rounded-xl bg-[#FFFAEF1A] h-full">
+                {/* Image area */}
+                <div
+                  className="w-full rounded-lg overflow-hidden relative shrink-0"
+                  style={{ height: "197px", background: FALLBACK_BG[i % FALLBACK_BG.length] }}
                 >
-                  View Casestudy
-                </a>
+                  {project.coverImageUrl && (
+                    <img src={project.coverImageUrl} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
+                  )}
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(179.85deg, rgba(15,15,15,0) 20.08%, #000 99.87%)" }} />
+                  <div className="absolute bottom-0 left-0 p-4 flex flex-col gap-1">
+                    <span className="text-white font-medium text-[24px] leading-none">{project.title}</span>
+                    {project.subtitle && <span className="text-white font-light text-[12px] leading-[150%]">{project.subtitle}</span>}
+                  </div>
+                </div>
+                {/* CTAs */}
+                <div className="flex justify-start items-center gap-3 px-3">
+                  {project.repoUrl && (
+                    <a href={project.repoUrl} className="text-cream text-[18px] hover:opacity-70 transition-opacity">Design</a>
+                  )}
+                  <span className="rounded-full p-px" style={{ background: BORDER }}>
+                    <a href={project.url ?? "#"} className="block px-15 py-[5px] rounded-full text-cream text-[18px] bg-black hover:bg-white/10 transition-colors">
+                      Live
+                    </a>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

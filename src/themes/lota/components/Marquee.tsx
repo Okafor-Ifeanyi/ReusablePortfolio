@@ -1,24 +1,48 @@
 "use client";
 
-const logos = [
-  "Learnify", "flip", "Ventree", "Femflex", "Buddy", "Plana",
-  "SIMBI", "NEXGEN", "LipManiac",
+const images = [
+  "/images/marquee/Vector-5.svg",
+  "/images/marquee/Vector-6.svg",
+  "/images/marquee/Vector-7.svg",
+  "/images/marquee/Vector-8.svg",
+  "/images/marquee/Vector-9.svg",
+  "/images/marquee/Vector-10.svg",
 ];
 
-export default function Marquee() {
-  // Duplicate for seamless loop
-  const items = [...logos, ...logos];
+// 4× duplication: animation scrolls -50% (= 2 sets), loops back seamlessly
+const items = [...images, ...images, ...images, ...images];
 
+export default function Marquee() {
   return (
-    <div className="w-full overflow-hidden py-4 my-8" style={{ background: "linear-gradient(90deg, rgba(217,217,217,0) 0%, #737373 10%, #737373 90%, rgba(115,115,115,0) 100%)" }}>
-      <div className="flex items-center gap-[51.84px] animate-marquee whitespace-nowrap w-max">
-        {items.map((logo, i) => (
-          <span
+    <div
+      style={{
+        width: "90%",
+        margin: "2rem auto",
+        overflow: "hidden",
+        maskImage: "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "64px",
+          width: "max-content",
+          padding: "1.5rem 0",
+          animation: "lota-marquee 22s linear infinite",
+          willChange: "transform",
+        }}
+      >
+        {items.map((src, i) => (
+          <img
             key={i}
-            className="text-[#99968F] font-medium text-[18px] select-none"
-          >
-            {logo}
-          </span>
+            src={src}
+            alt=""
+            aria-hidden
+            draggable={false}
+            style={{ height: "40px", width: "auto", opacity: 0.7, flexShrink: 0, userSelect: "none" }}
+          />
         ))}
       </div>
     </div>

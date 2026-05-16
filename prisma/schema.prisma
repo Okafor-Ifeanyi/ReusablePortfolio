@@ -77,6 +77,7 @@ model Portfolio {
   projects      Project[]
   skills        Skill[]
   links         Link[]
+  testimonials  Testimonial[]
   domainMapping DomainMapping?
 
   @@map("portfolios")
@@ -128,6 +129,7 @@ model Project {
   url           String?   /// Live project URL
   repoUrl       String?   @map("repo_url") /// GitHub / GitLab URL
   duration      String?   /// e.g. "Mar 2024 – Present"
+  category      String?   /// Theme display group: branding | webapps | pitchdeck | graphic
   projectType   String?   @map("project_type") /// Solo | Lead Engineer | Collaboration
   featured      Boolean   @default(false)
   sortOrder     Int       @default(0) @map("sort_order")
@@ -137,6 +139,21 @@ model Project {
   projectSkills ProjectSkill[]
 
   @@map("projects")
+}
+
+model Testimonial {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String   @map("portfolio_id") @db.Uuid
+  name        String
+  role        String
+  text        String
+  avatarUrl   String?  @map("avatar_url")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@map("testimonials")
 }
 
 model Skill {

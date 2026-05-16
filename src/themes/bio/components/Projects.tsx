@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { truncate } from "@/lib/utils";
 import type { BioProject } from "../index";
+
+const E = "cubic-bezier(0.16,1,0.3,1)";
 
 function TechTag({ label }: { label: string }) {
   return (
@@ -15,13 +17,19 @@ function TechTag({ label }: { label: string }) {
   );
 }
 
-function ProjectCard({ project }: { project: BioProject }) {
+function ProjectCard({ project, index, visible }: { project: BioProject; index: number; visible: boolean }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div
-      className="group border-b border-light-border/40 dark:border-dark-border/40 cursor-pointer transition-colors hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
+      className="group border-b border-light-border/40 dark:border-dark-border/40 cursor-pointer"
       onClick={() => setExpanded(!expanded)}
+      style={{
+        opacity: visible ? undefined : 0,
+        animation: visible
+          ? `bio-fade-up 0.65s ${E} ${0.1 + index * 0.08}s both`
+          : "none",
+      }}
     >
       {/* Collapsed row */}
       <div className="flex flex-row items-center justify-between py-8 px-4 gap-4">
@@ -43,19 +51,13 @@ function ProjectCard({ project }: { project: BioProject }) {
         </div>
 
         <div className="flex flex-wrap justify-end items-center gap-2.5">
-          {(expanded ? project.skills : project.skills.slice(0, 7)).map(
-            (skill) => (
-              <TechTag key={skill} label={skill} />
-            ),
-          )}
+          {(expanded ? project.skills : project.skills.slice(0, 7)).map((skill) => (
+            <TechTag key={skill} label={skill} />
+          ))}
           {!expanded && project.skills.length > 7 && (
             <span
               className="inline-flex items-center px-2 py-1 text-light-muted dark:text-dark-muted whitespace-nowrap"
-              style={{
-                fontSize: "14px",
-                letterSpacing: "0.05em",
-                lineHeight: "150%",
-              }}
+              style={{ fontSize: "14px", letterSpacing: "0.05em", lineHeight: "150%" }}
             >
               +{project.skills.length - 7} more
             </span>
@@ -63,142 +65,114 @@ function ProjectCard({ project }: { project: BioProject }) {
         </div>
       </div>
 
-      {/* Expanded panel — grid-rows animates to actual content height, no floating gaps */}
+      {/* Expanded panel */}
       <div
         className={`grid transition-all duration-500 ease-in-out ${
           expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
         <div className="overflow-hidden">
-        <div className="flex flex-col md:flex-row gap-8 px-4 pt-2 pb-12">
-          {/* Cover image or placeholder */}
-          <div className="relative w-full md:w-105 aspect-video rounded-lg shrink-0 overflow-hidden border border-light-border/20 dark:border-dark-border/20">
-            {project.coverImageUrl ? (
-              <>
-                {/* Blurred fill — CSS background covers every pixel including corners */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 scale-110"
-                  style={{
-                    backgroundImage: `url(${project.coverImageUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: "blur(20px)",
-                    opacity: 0.6,
-                  }}
-                />
-                {/* Foreground — fully visible, never exceeds the box */}
-                <img
-                  src={project.coverImageUrl}
-                  alt={project.title}
-                  className="relative z-10 w-full h-full object-contain"
-                />
-              </>
-            ) : (
-              <div className="w-full h-full bg-light-text/5 dark:bg-dark-text/5 flex items-center justify-center">
-                <span className="text-light-muted dark:text-dark-muted text-sm">
-                  {project.title} preview
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Details */}
-          <div className="flex flex-col gap-4 justify-center flex-1">
-            {project.description && (
-              <p
-                className="text-light-muted dark:text-dark-muted"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "150%",
-                  fontWeight: 300,
-                }}
-              >
-                {project.description}
-              </p>
-            )}
-
-            {project.skills.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {project.skills.map((skill) => (
-                  <TechTag key={skill} label={skill} />
-                ))}
-              </div>
-            )}
-
-            {/* Meta */}
-            <div className="flex flex-col gap-2">
-              {project.duration && (
-                <div
-                  className="flex items-center gap-2 text-light-muted dark:text-dark-muted"
-                  style={{ fontSize: "16px" }}
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  {project.duration}
-                </div>
-              )}
-              {project.projectType && (
-                <div
-                  className="flex items-center gap-2 text-light-muted dark:text-dark-muted"
-                  style={{ fontSize: "16px" }}
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                  {project.projectType}
+          <div className="flex flex-col md:flex-row gap-8 px-4 pt-2 pb-12">
+            {/* Cover image */}
+            <div className="relative w-full md:w-105 aspect-video rounded-lg shrink-0 overflow-hidden border border-light-border/20 dark:border-dark-border/20">
+              {project.coverImageUrl ? (
+                <>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 scale-110"
+                    style={{
+                      backgroundImage: `url(${project.coverImageUrl})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "blur(20px)",
+                      opacity: 0.6,
+                    }}
+                  />
+                  <img
+                    src={project.coverImageUrl}
+                    alt={project.title}
+                    className="relative z-10 w-full h-full object-contain"
+                  />
+                </>
+              ) : (
+                <div className="w-full h-full bg-light-text/5 dark:bg-dark-text/5 flex items-center justify-center">
+                  <span className="text-light-muted dark:text-dark-muted text-sm">
+                    {project.title} preview
+                  </span>
                 </div>
               )}
             </div>
 
-            {/* Links */}
-            <div className="flex items-center gap-4 mt-2">
-              {project.url && (
-                <a
-                  href={project.url}
-                  onClick={(e) => e.stopPropagation()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-light-text dark:bg-dark-text text-light-bg dark:text-dark-bg rounded-sm font-power transition-opacity hover:opacity-80"
-                  style={{ fontSize: "18px" }}
+            {/* Details */}
+            <div className="flex flex-col gap-4 justify-center flex-1">
+              {project.description && (
+                <p
+                  className="text-light-muted dark:text-dark-muted"
+                  style={{ fontSize: "20px", lineHeight: "150%", fontWeight: 300 }}
                 >
-                  Live Product
-                </a>
+                  {project.description}
+                </p>
               )}
-              {project.repoUrl && (
-                <a
-                  href={project.repoUrl}
-                  onClick={(e) => e.stopPropagation()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-sm font-power transition-opacity hover:opacity-70"
-                  style={{ fontSize: "18px" }}
-                >
-                  Source Code
-                </a>
+
+              {project.skills.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {project.skills.map((skill) => (
+                    <TechTag key={skill} label={skill} />
+                  ))}
+                </div>
               )}
+
+              <div className="flex flex-col gap-2">
+                {project.duration && (
+                  <div className="flex items-center gap-2 text-light-muted dark:text-dark-muted" style={{ fontSize: "16px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {project.duration}
+                  </div>
+                )}
+                {project.projectType && (
+                  <div className="flex items-center gap-2 text-light-muted dark:text-dark-muted" style={{ fontSize: "16px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    {project.projectType}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-4 mt-2">
+                {project.url && (
+                  <a
+                    href={project.url}
+                    onClick={(e) => e.stopPropagation()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-light-text dark:bg-dark-text text-light-bg dark:text-dark-bg rounded-sm font-power transition-opacity hover:opacity-80"
+                    style={{ fontSize: "18px" }}
+                  >
+                    Live Product
+                  </a>
+                )}
+                {project.repoUrl && (
+                  <a
+                    href={project.repoUrl}
+                    onClick={(e) => e.stopPropagation()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-sm font-power transition-opacity hover:opacity-70"
+                    style={{ fontSize: "18px" }}
+                  >
+                    Source Code
+                  </a>
+                )}
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -206,10 +180,23 @@ function ProjectCard({ project }: { project: BioProject }) {
 }
 
 export default function Projects({ projects }: { projects: BioProject[] }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.05 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (projects.length === 0) return null;
 
   return (
     <section
+      ref={sectionRef}
       id="projects"
       className="bg-light-bg dark:bg-dark-bg transition-colors duration-300 py-16"
     >
@@ -217,15 +204,19 @@ export default function Projects({ projects }: { projects: BioProject[] }) {
         <div className="mb-8">
           <h2
             className="text-light-text dark:text-dark-text tracking-design"
-            style={{ fontSize: "48px", lineHeight: "150%", fontWeight: 400 }}
+            style={{
+              fontSize: "48px", lineHeight: "150%", fontWeight: 400,
+              opacity: visible ? undefined : 0,
+              animation: visible ? `bio-fade-up 0.7s ${E} 0s both` : "none",
+            }}
           >
             &#123;Projects&#125;
           </h2>
         </div>
 
         <div className="flex flex-col px-4">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          {projects.map((project, i) => (
+            <ProjectCard key={project.id} project={project} index={i} visible={visible} />
           ))}
         </div>
       </div>

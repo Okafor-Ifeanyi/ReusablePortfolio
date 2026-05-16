@@ -1,7 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import type { BioLink } from "../index";
+
+const E  = "cubic-bezier(0.16,1,0.3,1)";
+const SP = "cubic-bezier(0.34,1.56,0.64,1)";
 
 const ICONS: Record<string, React.ReactElement> = {
   github: (
@@ -62,15 +65,35 @@ export default function Footer({
   links: BioLink[];
   fullName: string | null;
 }) {
+  const footerRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    if (footerRef.current) observer.observe(footerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const year = new Date().getFullYear();
   const name = fullName ?? "Portfolio";
 
   return (
-    <footer className="bg-[#08080E] border-t border-[#FFFCF2] w-full">
+    <footer
+      ref={footerRef}
+      className="bg-[#08080E] border-t border-[#FFFCF2] w-full"
+    >
       <div className="flex flex-col items-center justify-center py-12 gap-6 w-full">
+        {/* Contact heading */}
         <div
           className="flex flex-col items-center gap-2"
-          style={{ filter: "drop-shadow(0px 0px 30px rgba(255,255,255,0.3))" }}
+          style={{
+            filter: "drop-shadow(0px 0px 30px rgba(255,255,255,0.3))",
+            opacity: visible ? undefined : 0,
+            animation: visible ? `bio-fade-up 0.7s ${E} 0.1s both` : "none",
+          }}
         >
           <span
             className="text-[#FCFCFF] tracking-[2px] text-center"
@@ -92,9 +115,10 @@ export default function Footer({
           </p>
         </div>
 
+        {/* Social icons — each pops in with a spring, staggered */}
         {links.length > 0 && (
           <div className="flex flex-row items-center gap-4 flex-wrap justify-center">
-            {links.map((link) => (
+            {links.map((link, i) => (
               <a
                 key={link.id}
                 href={link.url}
@@ -102,6 +126,12 @@ export default function Footer({
                 rel="noopener noreferrer"
                 aria-label={link.label ?? link.platform}
                 className="flex items-center justify-center w-9.5 h-9.5 rounded-full border border-[#636363] text-[#FCFCFF] hover:border-[#FCFCFF] hover:scale-110 transition-all duration-200"
+                style={{
+                  opacity: visible ? undefined : 0,
+                  animation: visible
+                    ? `bio-icon-pop 0.6s ${SP} ${0.3 + i * 0.06}s both`
+                    : "none",
+                }}
               >
                 {ICONS[link.platform] ?? ICONS.other}
               </a>
@@ -110,9 +140,14 @@ export default function Footer({
         )}
       </div>
 
+      {/* Copyright — last to arrive */}
       <div
         className="flex items-center justify-center py-8"
-        style={{ borderTop: "1px solid rgba(255,252,242,0.1)" }}
+        style={{
+          borderTop: "1px solid rgba(255,252,242,0.1)",
+          opacity: visible ? undefined : 0,
+          animation: visible ? `bio-fade-in 0.8s ${E} 0.55s both` : "none",
+        }}
       >
         <p
           className="text-center"

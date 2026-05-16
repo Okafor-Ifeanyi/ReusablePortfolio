@@ -18,10 +18,12 @@ function ProjectForm({
   project,
   availableSkills,
   onCancel,
+  defaultCategory,
 }: {
   project?: Project
   availableSkills: Skill[]
   onCancel?: () => void
+  defaultCategory?: string
 }) {
   const [isPending, startTransition] = useTransition()
   const boundAction = project ? updateProject.bind(null, project.id) : createProject
@@ -38,6 +40,7 @@ function ProjectForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-5 border border-gray-200 rounded-xl bg-white">
+      {defaultCategory && <input type="hidden" name="category" value={defaultCategory} />}
       <div>
         <label className={label}>Title <span className="text-red-400">*</span></label>
         <input name="title" required defaultValue={project?.title ?? ''} placeholder="My Project" className={input} />
@@ -132,9 +135,11 @@ function ProjectForm({
 export default function ProjectsSection({
   projects,
   availableSkills,
+  defaultCategory,
 }: {
   projects: Project[]
   availableSkills: Skill[]
+  defaultCategory?: string
 }) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
@@ -147,7 +152,7 @@ export default function ProjectsSection({
 
       {projects.map((project) =>
         editingId === project.id ? (
-          <ProjectForm key={project.id} project={project} availableSkills={availableSkills} onCancel={() => setEditingId(null)} />
+          <ProjectForm key={project.id} project={project} availableSkills={availableSkills} onCancel={() => setEditingId(null)} defaultCategory={defaultCategory} />
         ) : (
           <div key={project.id} className="flex items-start justify-between p-5 border border-gray-200 rounded-xl bg-white">
             <div className="flex-1 min-w-0">
@@ -187,7 +192,7 @@ export default function ProjectsSection({
       )}
 
       {adding ? (
-        <ProjectForm availableSkills={availableSkills} onCancel={() => setAdding(false)} />
+        <ProjectForm availableSkills={availableSkills} onCancel={() => setAdding(false)} defaultCategory={defaultCategory} />
       ) : (
         <button
           onClick={() => setAdding(true)}

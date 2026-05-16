@@ -5,6 +5,9 @@ import { truncate } from "../../../lib/utils";
 import { useTheme } from "./theme.provider";
 import type { BioHero } from "../index";
 
+const E  = "cubic-bezier(0.16,1,0.3,1)";
+const SP = "cubic-bezier(0.34,1.4,0.64,1)";
+
 export default function Hero({
   hero,
   yearsExperience,
@@ -17,7 +20,10 @@ export default function Hero({
   const sectionRef = useRef<HTMLElement>(null);
   const { theme } = useTheme();
   const [hovered, setHovered] = useState(false);
+  const [loaded,  setLoaded]  = useState(false);
   const isDark = theme === "dark";
+
+  useEffect(() => { setLoaded(true); }, []);
 
   const scrollToProjects = () => {
     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
@@ -34,10 +40,10 @@ export default function Hero({
   const lineColor = isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
   const spotColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
 
-  const headline = hero?.headline ?? "Fullstack Developer";
-  const bio = hero?.bio ?? null;
-  const ctaLabel = hero?.ctaLabel ?? "View Projects";
-  const ctaHref = hero?.ctaUrl ?? "#projects";
+  const headline  = hero?.headline  ?? "Fullstack Developer";
+  const bio       = hero?.bio       ?? null;
+  const ctaLabel  = hero?.ctaLabel  ?? "View Projects";
+  const ctaHref   = hero?.ctaUrl    ?? "#projects";
 
   const fullBio = bio ? truncate(bio, 100) : null;
   const [typedBio, setTypedBio] = useState("");
@@ -53,6 +59,9 @@ export default function Hero({
     return () => clearInterval(interval);
   }, [fullBio]);
 
+  const anim = (name: string, dur: string, delay: string, easing = E) =>
+    loaded ? `${name} ${dur} ${easing} ${delay} both` : "none";
+
   return (
     <section
       ref={sectionRef}
@@ -63,7 +72,7 @@ export default function Hero({
       style={{ "--mx": "-500px", "--my": "-500px" } as React.CSSProperties}
     >
       <div className="relative max-w-360 mx-15">
-        {/* Grid — contained within px-15 boundary */}
+        {/* Interactive grid */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -81,39 +90,50 @@ export default function Hero({
               ? "auto, 76px 76px, 76px 76px"
               : "76px 76px, 76px 76px",
             backgroundPosition: "0 0",
-            maskImage:
-              "linear-gradient(to bottom left, black 0%, rgba(0,0,0,0.2) 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom left, black 0%, rgba(0,0,0,0.2) 100%)",
+            maskImage:       "linear-gradient(to bottom left, black 0%, rgba(0,0,0,0.2) 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom left, black 0%, rgba(0,0,0,0.2) 100%)",
           }}
         />
 
         {/* Main hero content */}
         <div className="flex flex-col items-center pt-37.5 pb-30 gap-15">
           <div className="flex flex-col items-center gap-2.5">
+            {/* Brackets open like a curtain; headline rises between them */}
             <div className="flex flex-row items-center gap-3">
               <span
                 className="text-light-muted dark:text-dark-muted leading-none"
-                style={{ fontSize: "61px", lineHeight: 1, fontWeight: 400 }}
+                style={{
+                  fontSize: "61px", lineHeight: 1, fontWeight: 400,
+                  opacity: loaded ? undefined : 0,
+                  animation: anim("bio-slide-left", "0.9s", "0.05s"),
+                }}
               >
                 &lt;
               </span>
               <h1
                 className="text-light-text dark:text-dark-text tracking-design whitespace-nowrap"
-                style={{ fontSize: "61px", lineHeight: "150%", fontWeight: 400 }}
+                style={{
+                  fontSize: "61px", lineHeight: "150%", fontWeight: 400,
+                  opacity: loaded ? undefined : 0,
+                  animation: anim("bio-fade-up", "0.9s", "0.18s"),
+                }}
               >
                 {headline}
               </h1>
               <span
                 className="text-light-muted dark:text-dark-muted leading-none"
-                style={{ fontSize: "61px", lineHeight: 1, fontWeight: 400 }}
+                style={{
+                  fontSize: "61px", lineHeight: 1, fontWeight: 400,
+                  opacity: loaded ? undefined : 0,
+                  animation: anim("bio-slide-right", "0.9s", "0.05s"),
+                }}
               >
                 /&gt;
               </span>
             </div>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA — springs into place after the headline settles */}
           <a
             href={ctaHref}
             onClick={(e) => {
@@ -126,14 +146,24 @@ export default function Hero({
               bg-light-text text-light-bg hover:bg-light-text/90
               dark:bg-accent-light dark:text-dark-bg dark:hover:bg-accent-light/90
               font-power"
-            style={{ width: "228px", height: "76px" }}
+            style={{
+              width: "228px", height: "76px",
+              opacity: loaded ? undefined : 0,
+              animation: anim("bio-scale-up", "0.8s", "0.38s", SP),
+            }}
           >
             {ctaLabel}
           </a>
         </div>
 
-        {/* Bottom stats row */}
-        <div className="flex flex-wrap justify-between px-18 gap-6 items-center min-h-32">
+        {/* Stats row — rises as a unit after everything above is settled */}
+        <div
+          className="flex flex-wrap justify-between px-18 gap-6 items-center min-h-32"
+          style={{
+            opacity: loaded ? undefined : 0,
+            animation: anim("bio-fade-up", "0.8s", "0.55s"),
+          }}
+        >
           {fullBio && (
             <p
               className="text-light-text dark:text-dark-text tracking-design max-w-78.5"
@@ -182,8 +212,14 @@ export default function Hero({
           )}
         </div>
 
-        {/* Scroll down indicator */}
-        <div className="flex justify-center pb-8">
+        {/* Scroll indicator — last to appear, draws the eye downward */}
+        <div
+          className="flex justify-center pb-8"
+          style={{
+            opacity: loaded ? undefined : 0,
+            animation: anim("bio-fade-in", "0.7s", "0.75s"),
+          }}
+        >
           <button
             onClick={scrollToProjects}
             aria-label="Scroll to projects"

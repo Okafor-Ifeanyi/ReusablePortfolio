@@ -28,6 +28,7 @@ function parseProject(formData: FormData) {
     repoUrl: (formData.get('repoUrl') as string) || null,
     duration: (formData.get('duration') as string) || null,
     projectType: (formData.get('projectType') as string) || null,
+    category: (formData.get('category') as string) || null,
     featured: formData.get('featured') === 'on',
   }
 }

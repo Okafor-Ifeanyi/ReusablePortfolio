@@ -1,102 +1,55 @@
 "use client";
 
-const services = [
-  {
-    id: "branding",
-    label: "Branding Projects",
-    emoji: "🎨",
-    href: "#branding",
-    colSpan: 1,
-    rowSpan: 1,
-  },
-  {
-    id: "webapps",
-    label: "Web Apps",
-    emoji: "💻",
-    href: "#webapps",
-    colSpan: 1,
-    rowSpan: 1,
-  },
-  {
-    id: "meet",
-    label: "Meet Lota",
-    emoji: "👋",
-    href: "#about",
-    colSpan: 2,
-    rowSpan: 1,
-    wide: true,
-  },
-  {
-    id: "pitchdecks",
-    label: "Pitchdecks",
-    emoji: "📊",
-    href: "#pitchdecks",
-    colSpan: 1,
-    rowSpan: 1,
-  },
-  {
-    id: "graphics",
-    label: "Graphics",
-    emoji: "🖼️",
-    href: "#graphics",
-    colSpan: 1,
-    rowSpan: 1,
-  },
-];
+export const BORDER = "linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0.45) 100%)";
 
 export default function ServicesGrid() {
   return (
     <section id="services" className="w-full">
-      <div className="grid grid-cols-2 gap-0 w-full" style={{ height: "450px" }}>
-        {/* Row 1: Branding + Web Apps */}
-        <a
-          href="#branding"
-          className="flex items-center justify-center gap-3 bg-card-bg hover:bg-white/15 transition-colors border border-white/5 cursor-pointer"
-          style={{ height: "115.5px" }}
-        >
-          <span className="text-3xl rotate-[15deg]">🎨</span>
-          <span className="text-white font-medium text-[30px]">Branding Projects</span>
-        </a>
-        <a
-          href="#webapps"
-          className="flex items-center justify-center gap-3 bg-card-bg hover:bg-white/15 transition-colors border border-white/5 cursor-pointer"
-          style={{ height: "115.5px" }}
-        >
-          <span className="text-3xl rotate-[-15deg]">💻</span>
-          <span className="text-white font-medium text-[30px]">Web Apps</span>
-        </a>
+      <div className="grid grid-cols-2 gap-5 w-full" style={{ height: "450px" }}>
 
-        {/* Row 2: Meet Lota (full width) — has photo bg */}
-        <a
-          href="#about"
-          className="col-span-2 relative flex items-center justify-center bg-[#3B3B3B] hover:bg-[#444] transition-colors overflow-hidden cursor-pointer"
-          style={{ height: "179px" }}
-        >
-          {/* Subtle photo placeholder — replace with actual Lota photo */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/50" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            <div className="w-64 h-full bg-gradient-to-b from-[#D9D9D9] to-transparent" />
-          </div>
-          <span className="relative z-10 text-white font-medium text-[30px]">Meet Lota</span>
-        </a>
+        {/* Branding Projects */}
+        <div className="rounded-sm p-px" style={{ background: BORDER, height: "115.5px" }}>
+          <a href="#branding" className="rounded-sm flex items-center justify-center gap-1 bg-black hover:bg-[#FFFAEF26] transition-colors cursor-pointer h-full w-full">
+            <span className="text-3xl"><img src="/images/services/branding.svg" alt="Branding" /></span>
+            <span className="text-white font-medium text-[30px]">Branding Projects</span>
+          </a>
+        </div>
 
-        {/* Row 3: Pitchdecks + Graphics */}
-        <a
-          href="#pitchdecks"
-          className="flex items-center justify-center gap-3 bg-card-bg hover:bg-white/15 transition-colors border border-white/5 cursor-pointer"
-          style={{ height: "115.5px" }}
-        >
-          <span className="text-3xl rotate-[-15deg]">📊</span>
-          <span className="text-white font-medium text-[30px]">Pitchdecks</span>
-        </a>
-        <a
-          href="#graphics"
-          className="flex items-center justify-center gap-3 bg-card-bg hover:bg-white/15 transition-colors border border-white/5 cursor-pointer"
-          style={{ height: "115.5px" }}
-        >
-          <span className="text-3xl rotate-[15deg]">🖼️</span>
-          <span className="text-white font-medium text-[30px]">Graphics</span>
-        </a>
+        {/* Web Apps */}
+        <div className="rounded-sm p-px" style={{ background: BORDER, height: "115.5px" }}>
+          <a href="#webapps" className="rounded-sm flex items-center justify-center gap-1 bg-black hover:bg-[#FFFAEF26] transition-colors cursor-pointer h-full w-full">
+            <span className="text-3xl"><img src="/images/services/web-design.svg" alt="Web Apps" /></span>
+            <span className="text-white font-medium text-[30px]">Web Apps</span>
+          </a>
+        </div>
+
+        {/* Meet Lota — full width, photo bg */}
+        <div className="col-span-2 rounded-sm p-px" style={{ background: BORDER, height: "179px" }}>
+          <a href="#about" className="rounded-sm relative flex items-center justify-center overflow-hidden hover:bg-white/5 transition-colors cursor-pointer h-full w-full">
+            <img src="/images/meet-lota.png" alt="" aria-hidden className="absolute inset-0 w-2/3 h-full object-cover mx-auto opacity-70" style={{ objectPosition: "50% 20%" }} />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-y-0 left-0 w-32 pointer-events-none" style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", maskImage: "linear-gradient(to right, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 100%)" }} />
+            <div className="absolute inset-y-0 right-0 w-32 pointer-events-none" style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", maskImage: "linear-gradient(to left, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 100%)" }} />
+            <span className="relative z-10 text-white font-medium text-[30px]">Meet Lota</span>
+          </a>
+        </div>
+
+        {/* Pitchdecks */}
+        <div className="rounded-sm p-px" style={{ background: BORDER, height: "115.5px" }}>
+          <a href="#pitchdecks" className="rounded-sm flex items-center justify-center gap-1 bg-[#FFFAEF1A] hover:bg-[#FFFAEF26] transition-colors cursor-pointer h-full w-full">
+            <span className="text-3xl"><img src="/images/services/presentation.svg" alt="Pitchdecks" /></span>
+            <span className="text-white font-medium text-[30px]">Pitchdecks</span>
+          </a>
+        </div>
+
+        {/* Graphics */}
+        <div className="rounded-sm p-px" style={{ height: "115.5px" }}>
+          <a href="#graphics" className="rounded-sm flex items-center justify-center gap-1 bg-[#FFFAEF1A] hover:bg-[#FFFAEF26] transition-colors cursor-pointer h-full w-full">
+            <span className="text-3xl"><img src="/images/services/windows.svg" alt="Graphics" /></span>
+            <span className="text-white font-medium text-[30px]">Graphics</span>
+          </a>
+        </div>
+
       </div>
     </section>
   );

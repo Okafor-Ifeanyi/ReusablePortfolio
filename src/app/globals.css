@@ -54,15 +54,56 @@
   --font-family-istok: "Istok Web", sans-serif;
 
   /* ── Lota colours ── */
-  --color-gold: #FFC659;
+  --color-gold: #FFC041;
   --color-gold-border: #F2A206;
   --color-cream: #FFFAEF;
   --color-off-white: #DFDFDF;
   --color-lota-muted: #99968F;
+  --color-lota-bg: #FFFAEF1A;
   --color-lota-dark-bg: #0F0F0F;
   --color-card-bg: rgba(255, 250, 239, 0.1);
 
   /* ── Shared ── */
   --tracking-design: 0.02em;
   --tracking-tag: 0.05em;
+}
+
+/* ─────────────────────────────────────────
+   Bio theme — motion keyframes
+   Easing convention: expo-out (0.16,1,0.3,1)
+   ───────────────────────────────────────── */
+@keyframes bio-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bio-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes bio-slide-left {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes bio-slide-right {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes bio-clip-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+@keyframes bio-scale-up {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+@keyframes bio-icon-pop {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.6); }
+  65%  { opacity: 1; transform: translateY(-4px)  scale(1.12); }
+  100% { opacity: 1; transform: translateY(0)     scale(1); }
+}
+
+/* ── Lota marquee ── */
+@keyframes lota-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }

@@ -31,6 +31,23 @@
 /* Dark variant driven by .dark class on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Cursor glow color — flips automatically with theme */
+:root { --cursor-glow: rgba(0, 0, 0, 0.05); }
+html.dark { --cursor-glow: rgba(255, 255, 255, 0.055); }
+
+/* Smooth theme switch — only active for the duration of the toggle */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    fill 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 250ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
 @theme {
   /* ── Bio fonts ── */
   --font-family-power: "Power Grotesk", sans-serif;

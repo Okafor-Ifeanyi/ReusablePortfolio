@@ -12,6 +12,7 @@ const portfolioInclude = {
   skills: { orderBy: { sortOrder: 'asc' } },
   links: { orderBy: { sortOrder: 'asc' } },
   testimonials: { orderBy: { sortOrder: 'asc' } },
+  domainMapping: true,
 } as const
 
 export async function getPortfolioByUsername(username: string) {

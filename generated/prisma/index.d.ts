@@ -5488,6 +5488,8 @@ export namespace Prisma {
     userId: string | null
     themeId: string | null
     slug: string | null
+    subdomain: string | null
+    isHosted: boolean | null
     isPublished: boolean | null
     publishedAt: Date | null
     updatedAt: Date | null
@@ -5498,6 +5500,8 @@ export namespace Prisma {
     userId: string | null
     themeId: string | null
     slug: string | null
+    subdomain: string | null
+    isHosted: boolean | null
     isPublished: boolean | null
     publishedAt: Date | null
     updatedAt: Date | null
@@ -5508,6 +5512,8 @@ export namespace Prisma {
     userId: number
     themeId: number
     slug: number
+    subdomain: number
+    isHosted: number
     isPublished: number
     publishedAt: number
     updatedAt: number
@@ -5520,6 +5526,8 @@ export namespace Prisma {
     userId?: true
     themeId?: true
     slug?: true
+    subdomain?: true
+    isHosted?: true
     isPublished?: true
     publishedAt?: true
     updatedAt?: true
@@ -5530,6 +5538,8 @@ export namespace Prisma {
     userId?: true
     themeId?: true
     slug?: true
+    subdomain?: true
+    isHosted?: true
     isPublished?: true
     publishedAt?: true
     updatedAt?: true
@@ -5540,6 +5550,8 @@ export namespace Prisma {
     userId?: true
     themeId?: true
     slug?: true
+    subdomain?: true
+    isHosted?: true
     isPublished?: true
     publishedAt?: true
     updatedAt?: true
@@ -5623,6 +5635,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain: string | null
+    isHosted: boolean
     isPublished: boolean
     publishedAt: Date | null
     updatedAt: Date
@@ -5650,6 +5664,8 @@ export namespace Prisma {
     userId?: boolean
     themeId?: boolean
     slug?: boolean
+    subdomain?: boolean
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
@@ -5670,6 +5686,8 @@ export namespace Prisma {
     userId?: boolean
     themeId?: boolean
     slug?: boolean
+    subdomain?: boolean
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
@@ -5682,6 +5700,8 @@ export namespace Prisma {
     userId?: boolean
     themeId?: boolean
     slug?: boolean
+    subdomain?: boolean
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
@@ -5694,12 +5714,14 @@ export namespace Prisma {
     userId?: boolean
     themeId?: boolean
     slug?: boolean
+    subdomain?: boolean
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "themeId" | "slug" | "isPublished" | "publishedAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
+  export type PortfolioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "themeId" | "slug" | "subdomain" | "isHosted" | "isPublished" | "publishedAt" | "updatedAt", ExtArgs["result"]["portfolio"]>
   export type PortfolioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     theme?: boolean | ThemeDefaultArgs<ExtArgs>
@@ -5742,6 +5764,11 @@ export namespace Prisma {
        * Public URL — username.app.com/[slug]
        */
       slug: string
+      /**
+       * Assigned subdomain slug e.g. "john" for john.ifeanyiokafor.com
+       */
+      subdomain: string | null
+      isHosted: boolean
       isPublished: boolean
       publishedAt: Date | null
       updatedAt: Date
@@ -6181,6 +6208,8 @@ export namespace Prisma {
     readonly userId: FieldRef<"Portfolio", 'String'>
     readonly themeId: FieldRef<"Portfolio", 'String'>
     readonly slug: FieldRef<"Portfolio", 'String'>
+    readonly subdomain: FieldRef<"Portfolio", 'String'>
+    readonly isHosted: FieldRef<"Portfolio", 'Boolean'>
     readonly isPublished: FieldRef<"Portfolio", 'Boolean'>
     readonly publishedAt: FieldRef<"Portfolio", 'DateTime'>
     readonly updatedAt: FieldRef<"Portfolio", 'DateTime'>
@@ -15952,6 +15981,8 @@ export namespace Prisma {
     userId: 'userId',
     themeId: 'themeId',
     slug: 'slug',
+    subdomain: 'subdomain',
+    isHosted: 'isHosted',
     isPublished: 'isPublished',
     publishedAt: 'publishedAt',
     updatedAt: 'updatedAt'
@@ -16403,6 +16434,8 @@ export namespace Prisma {
     userId?: UuidFilter<"Portfolio"> | string
     themeId?: UuidFilter<"Portfolio"> | string
     slug?: StringFilter<"Portfolio"> | string
+    subdomain?: StringNullableFilter<"Portfolio"> | string | null
+    isHosted?: BoolFilter<"Portfolio"> | boolean
     isPublished?: BoolFilter<"Portfolio"> | boolean
     publishedAt?: DateTimeNullableFilter<"Portfolio"> | Date | string | null
     updatedAt?: DateTimeFilter<"Portfolio"> | Date | string
@@ -16422,6 +16455,8 @@ export namespace Prisma {
     userId?: SortOrder
     themeId?: SortOrder
     slug?: SortOrder
+    subdomain?: SortOrderInput | SortOrder
+    isHosted?: SortOrder
     isPublished?: SortOrder
     publishedAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
@@ -16440,10 +16475,12 @@ export namespace Prisma {
     id?: string
     userId?: string
     slug?: string
+    subdomain?: string
     AND?: PortfolioWhereInput | PortfolioWhereInput[]
     OR?: PortfolioWhereInput[]
     NOT?: PortfolioWhereInput | PortfolioWhereInput[]
     themeId?: UuidFilter<"Portfolio"> | string
+    isHosted?: BoolFilter<"Portfolio"> | boolean
     isPublished?: BoolFilter<"Portfolio"> | boolean
     publishedAt?: DateTimeNullableFilter<"Portfolio"> | Date | string | null
     updatedAt?: DateTimeFilter<"Portfolio"> | Date | string
@@ -16456,13 +16493,15 @@ export namespace Prisma {
     links?: LinkListRelationFilter
     testimonials?: TestimonialListRelationFilter
     domainMapping?: XOR<DomainMappingNullableScalarRelationFilter, DomainMappingWhereInput> | null
-  }, "id" | "userId" | "slug">
+  }, "id" | "userId" | "slug" | "subdomain">
 
   export type PortfolioOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     themeId?: SortOrder
     slug?: SortOrder
+    subdomain?: SortOrderInput | SortOrder
+    isHosted?: SortOrder
     isPublished?: SortOrder
     publishedAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
@@ -16479,6 +16518,8 @@ export namespace Prisma {
     userId?: UuidWithAggregatesFilter<"Portfolio"> | string
     themeId?: UuidWithAggregatesFilter<"Portfolio"> | string
     slug?: StringWithAggregatesFilter<"Portfolio"> | string
+    subdomain?: StringNullableWithAggregatesFilter<"Portfolio"> | string | null
+    isHosted?: BoolWithAggregatesFilter<"Portfolio"> | boolean
     isPublished?: BoolWithAggregatesFilter<"Portfolio"> | boolean
     publishedAt?: DateTimeNullableWithAggregatesFilter<"Portfolio"> | Date | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"Portfolio"> | Date | string
@@ -17332,6 +17373,8 @@ export namespace Prisma {
   export type PortfolioCreateInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -17351,6 +17394,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -17366,6 +17411,8 @@ export namespace Prisma {
   export type PortfolioUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17385,6 +17432,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17402,6 +17451,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -17410,6 +17461,8 @@ export namespace Prisma {
   export type PortfolioUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17420,6 +17473,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18396,6 +18451,8 @@ export namespace Prisma {
     userId?: SortOrder
     themeId?: SortOrder
     slug?: SortOrder
+    subdomain?: SortOrder
+    isHosted?: SortOrder
     isPublished?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
@@ -18406,6 +18463,8 @@ export namespace Prisma {
     userId?: SortOrder
     themeId?: SortOrder
     slug?: SortOrder
+    subdomain?: SortOrder
+    isHosted?: SortOrder
     isPublished?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
@@ -18416,6 +18475,8 @@ export namespace Prisma {
     userId?: SortOrder
     themeId?: SortOrder
     slug?: SortOrder
+    subdomain?: SortOrder
+    isHosted?: SortOrder
     isPublished?: SortOrder
     publishedAt?: SortOrder
     updatedAt?: SortOrder
@@ -19738,6 +19799,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutUserInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -19755,6 +19818,8 @@ export namespace Prisma {
     id?: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -19818,6 +19883,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19835,6 +19902,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19953,6 +20022,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutThemeInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -19970,6 +20041,8 @@ export namespace Prisma {
     id?: string
     userId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20016,6 +20089,8 @@ export namespace Prisma {
     userId?: UuidFilter<"Portfolio"> | string
     themeId?: UuidFilter<"Portfolio"> | string
     slug?: StringFilter<"Portfolio"> | string
+    subdomain?: StringNullableFilter<"Portfolio"> | string | null
+    isHosted?: BoolFilter<"Portfolio"> | boolean
     isPublished?: BoolFilter<"Portfolio"> | boolean
     publishedAt?: DateTimeNullableFilter<"Portfolio"> | Date | string | null
     updatedAt?: DateTimeFilter<"Portfolio"> | Date | string
@@ -20593,6 +20668,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutHeroInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20611,6 +20688,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20641,6 +20720,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutHeroInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20659,6 +20740,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20673,6 +20756,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutExperiencesInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20691,6 +20776,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20721,6 +20808,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutExperiencesInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20739,6 +20828,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20753,6 +20844,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutProjectsInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20771,6 +20864,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20819,6 +20914,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20837,6 +20934,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20875,6 +20974,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutTestimonialsInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20893,6 +20994,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20923,6 +21026,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutTestimonialsInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20941,6 +21046,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20955,6 +21062,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutSkillsInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -20973,6 +21082,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21021,6 +21132,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutSkillsInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21039,6 +21152,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21201,6 +21316,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutLinksInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21219,6 +21336,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21249,6 +21368,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutLinksInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21267,6 +21388,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21281,6 +21404,8 @@ export namespace Prisma {
   export type PortfolioCreateWithoutDomainMappingInput = {
     id?: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21299,6 +21424,8 @@ export namespace Prisma {
     userId: string
     themeId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21329,6 +21456,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutDomainMappingInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21347,6 +21476,8 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     themeId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21406,6 +21537,8 @@ export namespace Prisma {
     id?: string
     userId: string
     slug: string
+    subdomain?: string | null
+    isHosted?: boolean
     isPublished?: boolean
     publishedAt?: Date | string | null
     updatedAt?: Date | string
@@ -21414,6 +21547,8 @@ export namespace Prisma {
   export type PortfolioUpdateWithoutThemeInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21431,6 +21566,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21447,6 +21584,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    subdomain?: NullableStringFieldUpdateOperationsInput | string | null
+    isHosted?: BoolFieldUpdateOperationsInput | boolean
     isPublished?: BoolFieldUpdateOperationsInput | boolean
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

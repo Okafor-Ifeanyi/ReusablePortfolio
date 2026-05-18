@@ -43,7 +43,7 @@ export function ImageUpload({
     })
   }
 
-  const aspectClass = aspectRatio === 'square' ? 'aspect-square' : 'aspect-video'
+  const isSquare = aspectRatio === 'square'
 
   return (
     <div className="flex flex-col gap-2">
@@ -51,7 +51,7 @@ export function ImageUpload({
       <input type="hidden" name={name} value={url} />
 
       <div
-        className={`relative w-full ${aspectClass} rounded-lg border border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center`}
+        className={`relative ${isSquare ? 'w-50 h-50 rounded-full' : 'w-full aspect-video rounded-lg'} border border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center`}
       >
         {url ? (
           <img src={url} alt={label} className="w-full h-full object-cover" />

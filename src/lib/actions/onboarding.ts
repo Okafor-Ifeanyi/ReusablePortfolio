@@ -31,5 +31,5 @@ export async function selectTheme(themeSlug: string) {
     update: { themeId: theme.id },
   })
 
-  redirect('/dashboard')
+  redirect('/onboarding/done')
 }

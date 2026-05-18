@@ -10,6 +10,7 @@ const BIO_NAV = [
   { href: '/dashboard/skills',     label: 'Skills' },
   { href: '/dashboard/projects',   label: 'Projects' },
   { href: '/dashboard/links',      label: 'Links' },
+  { href: '/dashboard/domain',     label: 'Domain' },
 ]
 
 const LOTA_NAV = [
@@ -22,6 +23,7 @@ const LOTA_NAV = [
   { href: '/dashboard/skills',                      label: 'Skills' },
   { href: '/dashboard/testimonials',                label: 'Testimonials' },
   { href: '/dashboard/links',                       label: 'Links' },
+  { href: '/dashboard/domain',                      label: 'Domain' },
 ]
 
 export default function DashboardNav({ theme }: { theme: string }) {

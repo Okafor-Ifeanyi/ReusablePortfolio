@@ -51,7 +51,9 @@ const BioPreview = (
       <p className="text-[#636363] text-xs leading-relaxed max-w-xs">
         Building scalable products across fintech, e-commerce and web.
       </p>
-      <div className="w-28 h-8 bg-[#05050D] rounded-sm mt-2" />
+      <div className="w-28 h-8 bg-[#05050D] rounded-sm mt-2 flex justify-center items-center">
+        <span className="text-white text-center text-[9px]">Download CV</span>
+      </div>
     </div>
     <div className="flex gap-2 flex-wrap">
       {['Projects', 'Skills', 'Experience', 'Links'].map(s => (
@@ -96,7 +98,7 @@ export default function OnboardingPage() {
           <p className="text-white/40 text-sm">You can change this later from your dashboard.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-3xl">
           <ThemeCard
             slug="bio"
             name="Bio"

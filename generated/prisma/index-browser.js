@@ -161,6 +161,8 @@ exports.Prisma.PortfolioScalarFieldEnum = {
   userId: 'userId',
   themeId: 'themeId',
   slug: 'slug',
+  subdomain: 'subdomain',
+  isHosted: 'isHosted',
   isPublished: 'isPublished',
   publishedAt: 'publishedAt',
   updatedAt: 'updatedAt'

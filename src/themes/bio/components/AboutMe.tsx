@@ -98,6 +98,7 @@ export default function AboutMe({
                     src={avatarUrl}
                     alt={name}
                     className="w-full h-full object-cover grayscale"
+                    style={{ objectPosition: "center top" }}
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-light-muted dark:text-dark-muted text-sm">

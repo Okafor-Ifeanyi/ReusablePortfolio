@@ -1,0 +1,57 @@
+/* bio.css — scoped rules for [data-theme="bio"] only */
+
+[data-theme="bio"] {
+  font-family: var(--font-family-power);
+  color: var(--color-light-text);
+  background-color: var(--color-light-bg);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+}
+
+.dark [data-theme="bio"] {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+/* Scrollbar */
+[data-theme="bio"] ::-webkit-scrollbar { width: 6px; }
+[data-theme="bio"] ::-webkit-scrollbar-track { background: transparent; }
+[data-theme="bio"] ::-webkit-scrollbar-thumb {
+  background: var(--color-light-muted);
+  border-radius: 99px;
+}
+
+/* Grain overlay */
+[data-theme="bio"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="bio"] .animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+[data-theme="bio"] .project-card { position: relative; }
+[data-theme="bio"] .project-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0;
+  height: 0.5px;
+  background: var(--color-light-text);
+  transition: width 0.4s ease;
+}
+[data-theme="bio"] .project-card:hover::after { width: 100%; }
+
+[data-theme="bio"] .skills-scroll::-webkit-scrollbar { display: none; }

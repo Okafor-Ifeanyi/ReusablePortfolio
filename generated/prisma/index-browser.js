@@ -161,6 +161,8 @@ exports.Prisma.PortfolioScalarFieldEnum = {
   userId: 'userId',
   themeId: 'themeId',
   slug: 'slug',
+  subdomain: 'subdomain',
+  isHosted: 'isHosted',
   isPublished: 'isPublished',
   publishedAt: 'publishedAt',
   updatedAt: 'updatedAt'
@@ -177,6 +179,7 @@ exports.Prisma.HeroScalarFieldEnum = {
   openToWork: 'openToWork',
   ctaLabel: 'ctaLabel',
   ctaUrl: 'ctaUrl',
+  yearsExperience: 'yearsExperience',
   updatedAt: 'updatedAt'
 };
 
@@ -197,11 +200,26 @@ exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
   portfolioId: 'portfolioId',
   title: 'title',
+  subtitle: 'subtitle',
   description: 'description',
   coverImageUrl: 'coverImageUrl',
   url: 'url',
   repoUrl: 'repoUrl',
+  duration: 'duration',
+  category: 'category',
+  projectType: 'projectType',
   featured: 'featured',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TestimonialScalarFieldEnum = {
+  id: 'id',
+  portfolioId: 'portfolioId',
+  name: 'name',
+  role: 'role',
+  text: 'text',
+  avatarUrl: 'avatarUrl',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt'
 };
@@ -262,6 +280,7 @@ exports.Prisma.ModelName = {
   Hero: 'Hero',
   Experience: 'Experience',
   Project: 'Project',
+  Testimonial: 'Testimonial',
   Skill: 'Skill',
   ProjectSkill: 'ProjectSkill',
   Link: 'Link',

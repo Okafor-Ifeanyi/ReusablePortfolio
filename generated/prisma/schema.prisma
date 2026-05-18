@@ -66,6 +66,8 @@ model Portfolio {
   userId      String    @unique @map("user_id") @db.Uuid
   themeId     String    @map("theme_id") @db.Uuid
   slug        String    @unique /// Public URL — username.app.com/[slug]
+  subdomain   String?   @unique /// Assigned subdomain slug e.g. "john" for john.ifeanyiokafor.com
+  isHosted    Boolean   @default(false) @map("is_hosted")
   isPublished Boolean   @default(false) @map("is_published")
   publishedAt DateTime? @map("published_at")
   updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
@@ -77,23 +79,25 @@ model Portfolio {
   projects      Project[]
   skills        Skill[]
   links         Link[]
+  testimonials  Testimonial[]
   domainMapping DomainMapping?
 
   @@map("portfolios")
 }
 
 model Hero {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  portfolioId String   @unique @map("portfolio_id") @db.Uuid /// One hero per portfolio
-  headline    String
-  subheadline String?
-  bio         String?
-  avatarUrl   String?  @map("avatar_url")
-  location    String?
-  openToWork  Boolean  @default(false) @map("open_to_work")
-  ctaLabel    String?  @map("cta_label") /// e.g. Download CV
-  ctaUrl      String?  @map("cta_url")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId     String   @unique @map("portfolio_id") @db.Uuid /// One hero per portfolio
+  headline        String
+  subheadline     String?
+  bio             String?
+  avatarUrl       String?  @map("avatar_url")
+  location        String?
+  openToWork      Boolean  @default(false) @map("open_to_work")
+  ctaLabel        String?  @map("cta_label") /// e.g. Download CV
+  ctaUrl          String?  @map("cta_url")
+  yearsExperience Int?     @map("years_experience") /// Manual override shown as "N+ years"
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
 
   portfolio Portfolio @relation(fields: [portfolioId], references: [id])
 
@@ -121,10 +125,14 @@ model Project {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   portfolioId   String   @map("portfolio_id") @db.Uuid
   title         String
+  subtitle      String? /// Short tagline shown in the collapsed row
   description   String?
   coverImageUrl String?  @map("cover_image_url")
   url           String? /// Live project URL
   repoUrl       String?  @map("repo_url") /// GitHub / GitLab URL
+  duration      String? /// e.g. "Mar 2024 – Present"
+  category      String? /// Theme display group: branding | webapps | pitchdeck | graphic
+  projectType   String?  @map("project_type") /// Solo | Lead Engineer | Collaboration
   featured      Boolean  @default(false)
   sortOrder     Int      @default(0) @map("sort_order")
   createdAt     DateTime @default(now()) @map("created_at")
@@ -133,6 +141,21 @@ model Project {
   projectSkills ProjectSkill[]
 
   @@map("projects")
+}
+
+model Testimonial {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portfolioId String   @map("portfolio_id") @db.Uuid
+  name        String
+  role        String
+  text        String
+  avatarUrl   String?  @map("avatar_url")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@map("testimonials")
 }
 
 model Skill {
@@ -152,8 +175,8 @@ model ProjectSkill {
   projectId String @map("project_id") @db.Uuid
   skillId   String @map("skill_id") @db.Uuid
 
-  project Project @relation(fields: [projectId], references: [id])
-  skill   Skill   @relation(fields: [skillId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([projectId, skillId])
   @@map("project_skills")

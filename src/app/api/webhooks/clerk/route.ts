@@ -11,33 +11,16 @@ export async function POST(req: Request) {
     throw new Error('CLERK_WEBHOOK_SECRET is missing from .env.local')
   }
 
-  console.debug(">>>>>>> Webhook initiated")
-
-  // 🔍 DEBUG 1: Check the secret (mask most of it)
-  console.debug(">>>>>>> SECRET preview:", WEBHOOK_SECRET.slice(0, 10) + "..." + WEBHOOK_SECRET.slice(-4))
-  console.debug(">>>>>>> SECRET length:", WEBHOOK_SECRET.length)
-  console.debug(">>>>>>> SECRET starts with whsec_:", WEBHOOK_SECRET.startsWith('whsec_'))
-
   const headerPayload = await headers()
   const svix_id        = headerPayload.get('svix-id')
   const svix_timestamp = headerPayload.get('svix-timestamp')
   const svix_signature = headerPayload.get('svix-signature')
-
-  // 🔍 DEBUG 2: Check headers
-  console.debug(">>>>>>> svix-id:", svix_id)
-  console.debug(">>>>>>> svix-timestamp:", svix_timestamp)
-  console.debug(">>>>>>> svix-signature:", svix_signature?.slice(0, 30) + "...")
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return new Response('Missing svix headers', { status: 400 })
   }
 
   const body = await req.text()
-
-  // 🔍 DEBUG 3: Check the body
-  console.debug(">>>>>>> Body length:", body.length)
-  console.debug(">>>>>>> Body preview:", body.slice(0, 100))
-  console.debug(">>>>>>> Body is valid JSON:", (() => { try { JSON.parse(body); return true } catch { return false } })())
 
   const wh = new Webhook(WEBHOOK_SECRET)
   let event: WebhookEvent

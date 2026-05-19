@@ -47,14 +47,14 @@ function SkillChip({ skill }: { skill: Skill }) {
 
 function AddSkillForm() {
   const [isPending, startTransition] = useTransition()
-  const { ready, hasDraft, revision, onFormChange, clearDraft, field } = useFormDraft('draft:skill:new')
+  const { ready, hasDraft, revision, onFormChange, wipeDraft, clearDraft, field } = useFormDraft('draft:skill:new')
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       await createSkill(fd)
-      clearDraft()
+      wipeDraft()
     })
   }
 

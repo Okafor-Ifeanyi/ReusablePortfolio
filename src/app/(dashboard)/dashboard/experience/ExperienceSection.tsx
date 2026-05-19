@@ -19,7 +19,7 @@ function toDateInput(date: Date | null) {
 
 function AddExperienceForm({ onCancel }: { onCancel: () => void }) {
   const [isPending, startTransition] = useTransition()
-  const { ready, hasDraft, revision, onFormChange, clearDraft, field, checked } = useFormDraft('draft:experience:new')
+  const { ready, hasDraft, revision, onFormChange, wipeDraft, clearDraft, field, checked } = useFormDraft('draft:experience:new')
   const [isCurrent, setIsCurrent] = useState(false)
   // Sync checkbox state from draft once it loads
   useEffect(() => { if (ready) setIsCurrent(checked('isCurrent', false)) }, [ready]) // eslint-disable-line
@@ -29,7 +29,7 @@ function AddExperienceForm({ onCancel }: { onCancel: () => void }) {
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       await createExperience(fd)
-      clearDraft()
+      wipeDraft()
       onCancel()
     })
   }

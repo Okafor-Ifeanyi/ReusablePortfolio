@@ -20,14 +20,14 @@ const PLATFORM_ICONS: Record<string, string> = {
 
 function AddLinkForm() {
   const [isPending, startTransition] = useTransition()
-  const { ready, hasDraft, revision, onFormChange, clearDraft, field } = useFormDraft('draft:link:new')
+  const { ready, hasDraft, revision, onFormChange, wipeDraft, clearDraft, field } = useFormDraft('draft:link:new')
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       await createLink(fd)
-      clearDraft()
+      wipeDraft()
     })
   }
 

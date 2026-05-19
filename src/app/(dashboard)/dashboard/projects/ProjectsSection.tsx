@@ -25,14 +25,14 @@ function AddProjectForm({
   defaultCategory?: string
 }) {
   const [isPending, startTransition] = useTransition()
-  const { ready, hasDraft, revision, onFormChange, clearDraft, field } = useFormDraft('draft:project:new')
+  const { ready, hasDraft, revision, onFormChange, wipeDraft, clearDraft, field } = useFormDraft('draft:project:new')
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       await createProject(fd)
-      clearDraft()
+      wipeDraft()
       onCancel()
     })
   }

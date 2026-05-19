@@ -43,7 +43,7 @@ export default function DashboardNav({ theme }: { theme: string }) {
   return (
     <aside className="w-52 shrink-0 border-r border-gray-200 bg-white flex flex-col py-6 px-3 gap-0.5">
       <p className="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-3 px-3">
-        {theme === 'lota' ? 'Lota' : 'Bio'} theme
+        {theme === 'lota' ? 'Lota' : 'BIO'} theme
       </p>
       {nav.map(({ href, label }) => {
         const active = isActive(href)

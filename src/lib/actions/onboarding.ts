@@ -18,7 +18,7 @@ export async function selectTheme(themeSlug: string) {
     where: { slug: themeSlug },
     create: {
       slug: themeSlug,
-      name: themeSlug === 'bio' ? 'Bio' : 'Lota',
+      name: themeSlug === 'bio' ? 'BIO' : 'Lota',
       tier: 'free',
       isPublished: true,
     },

@@ -191,7 +191,7 @@ export default function LandingPage() {
                     </div>
                   ))}
                 </div>
-                <span className="text-[10px] font-medium text-[#05050D]/30 uppercase tracking-widest">Bio theme</span>
+                <span className="text-[10px] font-medium text-[#05050D]/30 uppercase tracking-widest">BIO theme</span>
               </div>
             </div>
           </div>
@@ -283,13 +283,12 @@ export default function LandingPage() {
                 {/* <div className="w-32 h-9 bg-[#05050D] rounded-sm mt-4" >
                   <span></span>
                 </div> */}
-                <div className="w-24 h-7 bg-[#05050D] rounded-sm mt-1 flex justify-center items-center1" >
-
-                  <span className="text-white text-center text-[9px]">Download CV</span>
+                <div className="w-24 h-7 bg-[#05050D] rounded-sm mt-1 flex justify-center items-center" >
+                  <span className="text-white text-[9px]">Download CV</span>
                 </div>
               </div>
               <div className="p-6 flex flex-col gap-3">
-                <h3 className="text-[17px] font-semibold">Bio</h3>
+                <h3 className="text-[17px] font-semibold">BIO</h3>
                 <p className="text-gray-500 dark:text-white/40 text-sm leading-relaxed">
                   A clean, minimal layout for developers and engineers. Showcase projects, skills and experience in a structured, elegant format.
                 </p>
@@ -346,10 +345,12 @@ export default function LandingPage() {
       </section>
 
       {/* ── Footer ──────────────────────────────────────────────────── */}
-      <footer className="border-t border-gray-200 dark:border-white/[0.06] py-8 px-8 ">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <footer className="border-t border-gray-200 dark:border-white/[0.06] py-8 px-6 md:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col-reverse sm:flex-row items-center gap-4 sm:justify-between">
+          <p className="text-gray-400 dark:text-white/20 text-xs text-center sm:text-left">
+            © {new Date().getFullYear()} Folio. All rights reserved.
+          </p>
           <span className="font-semibold text-[15px] tracking-tight">Folio</span>
-          <p className="text-gray-400 dark:text-white/20 text-xs">© {new Date().getFullYear()} Folio. All rights reserved.</p>
           <div className="flex gap-5">
             <Link href="/login" className="text-gray-400 dark:text-white/30 text-xs hover:text-gray-700 dark:hover:text-white/60 transition-colors">Sign in</Link>
             <Link href="/register" className="text-gray-400 dark:text-white/30 text-xs hover:text-gray-700 dark:hover:text-white/60 transition-colors">Register</Link>

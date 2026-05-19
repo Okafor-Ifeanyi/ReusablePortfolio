@@ -45,7 +45,7 @@ function AddExperienceForm({ onCancel }: { onCancel: () => void }) {
     <div className="flex flex-col gap-3">
       {hasDraft && <DraftBanner onDiscard={clearDraft} />}
       <form key={revision} onSubmit={handleSubmit} onChange={onFormChange} className="flex flex-col gap-4 p-5 border border-gray-200 rounded-xl bg-white">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Company <span className="text-red-400">*</span></label>
           <input name="company" required defaultValue={field('company', '')} placeholder="Acme Inc." className={input} />
@@ -61,7 +61,7 @@ function AddExperienceForm({ onCancel }: { onCancel: () => void }) {
         <textarea name="description" rows={3} defaultValue={field('description', '')} placeholder="What did you work on?" className={`${input} resize-none`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Start date <span className="text-red-400">*</span></label>
           <input type="date" name="startDate" required defaultValue={field('startDate', '')} className={input} />
@@ -114,7 +114,7 @@ function EditExperienceForm({ exp, onCancel }: { exp: Experience; onCancel: () =
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-5 border border-gray-200 rounded-xl bg-white">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Company <span className="text-red-400">*</span></label>
           <input name="company" required defaultValue={exp.company} placeholder="Acme Inc." className={input} />
@@ -130,7 +130,7 @@ function EditExperienceForm({ exp, onCancel }: { exp: Experience; onCancel: () =
         <textarea name="description" rows={3} defaultValue={exp.description ?? ''} placeholder="What did you work on?" className={`${input} resize-none`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Start date <span className="text-red-400">*</span></label>
           <input type="date" name="startDate" required defaultValue={toDateInput(exp.startDate)} className={input} />

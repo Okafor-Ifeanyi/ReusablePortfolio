@@ -66,7 +66,7 @@ function AddProjectForm({
         <textarea name="description" rows={3} defaultValue={field('description', '')} placeholder="What does it do?" className={`${input} resize-none`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Live URL</label>
           <input name="url" defaultValue={field('url', '')} placeholder="https://..." className={input} />
@@ -77,7 +77,7 @@ function AddProjectForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Duration</label>
           <input name="duration" defaultValue={field('duration', '')} placeholder="e.g. Mar 2024 – Present" className={input} />
@@ -169,7 +169,7 @@ function EditProjectForm({
         <textarea name="description" rows={3} defaultValue={project.description ?? ''} placeholder="What does it do?" className={`${input} resize-none`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Live URL</label>
           <input name="url" defaultValue={project.url ?? ''} placeholder="https://..." className={input} />
@@ -180,7 +180,7 @@ function EditProjectForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Duration</label>
           <input name="duration" defaultValue={project.duration ?? ''} placeholder="e.g. Mar 2024 – Present" className={input} />

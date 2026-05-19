@@ -13,11 +13,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Top bar */}
-      <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+      <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6 shrink-0">
         <Link href="/" className="font-semibold text-gray-900 text-[15px] tracking-tight">
           Folio
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href={`/${portfolio.user.username}`}
             target="_blank"
@@ -29,9 +29,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-h-0">
         <DashboardNav theme={theme} />
-        <main className="flex-1 p-8 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-20 md:pb-8">
           <div className="max-w-2xl">{children}</div>
         </main>
       </div>

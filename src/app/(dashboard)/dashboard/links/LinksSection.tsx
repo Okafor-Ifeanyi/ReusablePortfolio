@@ -38,7 +38,7 @@ function AddLinkForm() {
       {hasDraft && <DraftBanner onDiscard={clearDraft} />}
       <form key={revision} onSubmit={handleSubmit} onChange={onFormChange} className="flex flex-col gap-4 p-5 border border-dashed border-gray-300 rounded-xl">
       <p className="text-sm font-medium text-gray-700">Add a link</p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Platform <span className="text-red-400">*</span></label>
           <select name="platform" required defaultValue={field('platform', 'github')} className={input}>
@@ -68,17 +68,15 @@ export default function LinksSection({ links }: { links: Link[] }) {
       {links.length > 0 && (
         <div className="flex flex-col gap-2">
           {links.map((link) => (
-            <div key={link.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-xl bg-white">
-              <div className="flex items-center gap-3">
-                <span className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-xs font-bold text-gray-600">
-                  {PLATFORM_ICONS[link.platform] ?? '↗'}
-                </span>
-                <div>
-                  <p className="text-sm font-medium capitalize">{link.label ?? link.platform}</p>
-                  <p className="text-xs text-gray-400 truncate max-w-xs">{link.url}</p>
-                </div>
+            <div key={link.id} className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl bg-white">
+              <span className="w-8 h-8 shrink-0 flex items-center justify-center bg-gray-100 rounded-lg text-xs font-bold text-gray-600">
+                {PLATFORM_ICONS[link.platform] ?? '↗'}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium capitalize truncate">{link.label ?? link.platform}</p>
+                <p className="text-xs text-gray-400 truncate">{link.url}</p>
               </div>
-              <form action={deleteLink.bind(null, link.id)}>
+              <form action={deleteLink.bind(null, link.id)} className="shrink-0">
                 <DeleteButton />
               </form>
             </div>

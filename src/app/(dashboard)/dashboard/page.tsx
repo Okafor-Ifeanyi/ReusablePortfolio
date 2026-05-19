@@ -40,15 +40,15 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <div className="flex items-start justify-between mb-8">
-        <div>
+      <div className="flex items-start justify-between gap-4 mb-8">
+        <div className="min-w-0">
           <ProfileNameEdit fullName={portfolio.user.fullName} />
-          <p className="text-sm text-gray-500 mt-1">/{portfolio.user.username}</p>
+          <p className="text-sm text-gray-500 mt-1 truncate">/{portfolio.user.username}</p>
         </div>
         <Link
           href={`/${portfolio.user.username}`}
           target="_blank"
-          className="text-sm text-gray-600 hover:text-gray-900 border border-gray-200 px-3 py-1.5 rounded-lg hover:border-gray-400 transition-colors"
+          className="shrink-0 text-sm text-gray-600 hover:text-gray-900 border border-gray-200 px-3 py-1.5 rounded-lg hover:border-gray-400 transition-colors"
         >
           Preview ↗
         </Link>

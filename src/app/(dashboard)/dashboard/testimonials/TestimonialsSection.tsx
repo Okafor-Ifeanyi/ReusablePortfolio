@@ -22,7 +22,7 @@ function TestimonialForm({ t, onCancel }: { t?: Testimonial; onCancel?: () => vo
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-5 border border-gray-200 rounded-xl bg-white">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Name <span className="text-red-400">*</span></label>
           <input name="name" required defaultValue={t?.name ?? ''} placeholder="Sarah O." className={input} />

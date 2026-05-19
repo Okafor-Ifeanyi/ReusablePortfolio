@@ -41,11 +41,20 @@ export function useFormDraft(draftKey: string, dbUpdatedAt?: Date | null) {
     localStorage.setItem(draftKey, JSON.stringify(next))
   }, [draftKey])
 
+  // Use after a successful save — removes draft without remounting the form.
+  // Inputs already show the saved values so no remount is needed.
+  const wipeDraft = useCallback(() => {
+    localStorage.removeItem(draftKey)
+    setDraft({})
+    setHasDraft(false)
+  }, [draftKey])
+
+  // Use for the Discard button — removes draft AND remounts the form so
+  // defaultValues reset to the current server-provided values.
   const clearDraft = useCallback(() => {
     localStorage.removeItem(draftKey)
     setDraft({})
     setHasDraft(false)
-    // Bump revision so the caller can use it as a form key, forcing remount
     setRevision(r => r + 1)
   }, [draftKey])
 
@@ -64,6 +73,7 @@ export function useFormDraft(draftKey: string, dbUpdatedAt?: Date | null) {
     hasDraft,
     revision,
     onFormChange,
+    wipeDraft,
     clearDraft,
     field,
     checked,

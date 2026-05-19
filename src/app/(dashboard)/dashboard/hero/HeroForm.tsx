@@ -15,14 +15,14 @@ const label = 'block text-sm font-medium text-gray-700 mb-1'
 
 export default function HeroForm({ hero }: { hero: Hero }) {
   const [, startTransition] = useTransition()
-  const { ready, hasDraft, revision, onFormChange, clearDraft, field, checked } = useFormDraft('draft:hero', hero?.updatedAt)
+  const { ready, hasDraft, revision, onFormChange, wipeDraft, clearDraft, field, checked } = useFormDraft('draft:hero', hero?.updatedAt)
 
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       await upsertHero(fd)
-      clearDraft()
+      wipeDraft()
     })
   }
 

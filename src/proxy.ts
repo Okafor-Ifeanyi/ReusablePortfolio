@@ -4,6 +4,9 @@ import { prisma } from '@/lib/db'
 
 const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN ?? 'ifeanyiokafor.com'
 
+// Subdomains that belong to the app itself — never treated as portfolio slugs
+const APP_SUBDOMAINS = new Set(['folio', 'www', 'app', 'api'])
+
 const isProtectedRoute  = createRouteMatcher(['/dashboard(.*)'])
 const isPublicOnlyRoute = createRouteMatcher(['/', '/onboarding(.*)', '/login(.*)', '/register(.*)'])
 const isWebhookRoute    = createRouteMatcher(['/api/webhooks(.*)'])
@@ -21,6 +24,18 @@ const handler = clerkMiddleware(async (auth, req) => {
   const subdomainMatch = hostWithoutPort.match(new RegExp(`^([a-z0-9-]+)\\.${BASE_DOMAIN.replace('.', '\\.')}$`))
   if (subdomainMatch) {
     const subdomain = subdomainMatch[1]
+
+    // Reserved subdomains pass straight through to the main app
+    if (APP_SUBDOMAINS.has(subdomain)) {
+      const { isAuthenticated, redirectToSignIn } = await auth()
+      if (!isAuthenticated && isProtectedRoute(req)) return redirectToSignIn()
+      if (isAuthenticated && isPublicOnlyRoute(req)) {
+        url.pathname = '/dashboard'
+        return NextResponse.redirect(url)
+      }
+      return
+    }
+
     const portfolio = await prisma.portfolio.findUnique({
       where: { subdomain },
       select: { slug: true, isHosted: true },

@@ -65,7 +65,7 @@ function AddSkillForm() {
       {hasDraft && <DraftBanner onDiscard={clearDraft} />}
       <form key={revision} onSubmit={handleSubmit} onChange={onFormChange} className="flex flex-col gap-4 p-5 border border-dashed border-gray-300 rounded-xl">
       <p className="text-sm font-medium text-gray-700">Add a skill</p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Skill name <span className="text-red-400">*</span></label>
           <input name="name" required defaultValue={field('name', '')} placeholder="e.g. TypeScript, React, Node.js" className={input} />

@@ -113,22 +113,24 @@ export default function DomainSection({ portfolio }: { portfolio: PortfolioData 
             </div>
 
             {!mapping.verified && (
-              <div className="bg-gray-50 rounded-lg p-4 text-xs text-gray-600 flex flex-col gap-3">
+              <div className="bg-gray-50 rounded-lg p-4 text-xs text-gray-600 flex flex-col gap-4">
                 <p className="font-medium text-gray-900">Add these DNS records at your domain provider:</p>
-                <div className="flex flex-col gap-2 font-mono">
-                  <div className="flex gap-3 items-start">
-                    <span className="text-gray-400 w-10 shrink-0">CNAME</span>
-                    <span className="text-gray-500 w-6 shrink-0">@</span>
-                    <span className="text-gray-700 break-all">cname.vercel-dns.com</span>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">CNAME</span>
+                    <div className="font-mono bg-white border border-gray-200 rounded-lg px-3 py-2 flex items-center justify-between gap-2">
+                      <span className="text-gray-500 shrink-0">@</span>
+                      <span className="text-gray-700 break-all text-right">cname.vercel-dns.com</span>
+                    </div>
                   </div>
-                  <div className="flex gap-3 items-start">
-                    <span className="text-gray-400 w-10 shrink-0">TXT</span>
-                    <span className="text-gray-500 w-auto shrink-0 text-[10px] leading-4">_portfolio-verify</span>
-                    <div className="flex flex-col gap-1 min-w-0">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">TXT</span>
+                    <div className="font-mono bg-white border border-gray-200 rounded-lg px-3 py-2 flex flex-col gap-1">
+                      <span className="text-gray-500 text-[10px]">_portfolio-verify</span>
                       <span className="text-gray-700 break-all">{mapping.verificationToken}</span>
                       <button
                         onClick={() => navigator.clipboard.writeText(mapping.verificationToken)}
-                        className="text-[10px] text-blue-500 hover:text-blue-700 text-left w-fit"
+                        className="text-[10px] text-blue-500 hover:text-blue-700 text-left w-fit mt-0.5"
                       >
                         Copy token
                       </button>

@@ -101,7 +101,7 @@ export default function OnboardingPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-3xl">
           <ThemeCard
             slug="bio"
-            name="Bio"
+            name="BIO"
             desc="Clean developer portfolio"
             preview={BioPreview}
             onSelect={() => pick('bio')}

@@ -49,7 +49,7 @@ export default function HeroForm({ hero }: { hero: Hero }) {
         <textarea name="bio" rows={4} defaultValue={field('bio', hero?.bio ?? '')} placeholder="Tell visitors about yourself..." className={`${input} resize-none`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>Location</label>
           <input name="location" defaultValue={field('location', hero?.location ?? '')} placeholder="e.g. Lagos, Nigeria" className={input} />
@@ -67,7 +67,7 @@ export default function HeroForm({ hero }: { hero: Hero }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={label}>CTA Label</label>
           <input name="ctaLabel" defaultValue={field('ctaLabel', hero?.ctaLabel ?? '')} placeholder="e.g. Download CV" className={input} />

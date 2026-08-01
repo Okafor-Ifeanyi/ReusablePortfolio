@@ -57,27 +57,10 @@ export async function getCurrentPortfolio() {
 
   if (!user) return null
 
-  if (user.portfolio) {
-    return {
-      ...user.portfolio,
-      user: { username: user.username, fullName: user.fullName, avatarUrl: user.avatarUrl },
-    }
-  }
-
-  // First visit — auto-create portfolio so new users aren't blocked
-  const theme = await prisma.theme.upsert({
-    where: { slug: 'bio' },
-    create: { slug: 'bio', name: 'Bio', tier: 'free', isPublished: true },
-    update: {},
-  })
-
-  const portfolio = await prisma.portfolio.create({
-    data: { userId: user.id, themeId: theme.id, slug: user.username },
-    include: portfolioInclude,
-  })
+  if (!user.portfolio) return null
 
   return {
-    ...portfolio,
+    ...user.portfolio,
     user: { username: user.username, fullName: user.fullName, avatarUrl: user.avatarUrl },
   }
 }

@@ -4,7 +4,7 @@ import DomainSection from './DomainSection'
 
 export default async function DomainPage() {
   const portfolio = await getCurrentPortfolio()
-  if (!portfolio) redirect('/login')
+  if (!portfolio) redirect('/onboarding')
 
   return (
     <div>

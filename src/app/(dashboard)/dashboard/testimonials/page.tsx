@@ -4,7 +4,7 @@ import TestimonialsSection from './TestimonialsSection'
 
 export default async function TestimonialsPage() {
   const portfolio = await getCurrentPortfolio()
-  if (!portfolio) redirect('/login')
+  if (!portfolio) redirect('/onboarding')
 
   return (
     <div>

@@ -8,7 +8,7 @@ const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN ?? 'ifeanyiokafor.com'
 const APP_SUBDOMAINS = new Set(['folio', 'www', 'app', 'api'])
 
 const isProtectedRoute  = createRouteMatcher(['/dashboard(.*)'])
-const isPublicOnlyRoute = createRouteMatcher(['/', '/onboarding(.*)', '/login(.*)', '/register(.*)'])
+const isPublicOnlyRoute = createRouteMatcher(['/', '/login(.*)', '/register(.*)'])
 const isWebhookRoute    = createRouteMatcher(['/api/webhooks(.*)'])
 
 const handler = clerkMiddleware(async (auth, req) => {

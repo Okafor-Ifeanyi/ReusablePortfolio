@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const portfolio = await getCurrentPortfolio()
-  if (!portfolio) redirect('/login')
+  if (!portfolio) redirect('/onboarding')
 
   const theme = portfolio.theme.slug
 

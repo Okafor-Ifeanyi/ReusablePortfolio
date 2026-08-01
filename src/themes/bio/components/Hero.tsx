@@ -71,7 +71,7 @@ export default function Hero({
       className="relative overflow-hidden bg-light-bg dark:bg-dark-bg transition-colors duration-300"
       style={{ "--mx": "-500px", "--my": "-500px" } as React.CSSProperties}
     >
-      <div className="relative max-w-360 mx-15">
+      <div className="relative max-w-360 mx-6 sm:mx-10 lg:mx-15">
         {/* Interactive grid */}
         <div
           aria-hidden
@@ -96,14 +96,14 @@ export default function Hero({
         />
 
         {/* Main hero content */}
-        <div className="flex flex-col items-center pt-37.5 pb-30 gap-15">
-          <div className="flex flex-col items-center gap-2.5">
+        <div className="flex flex-col items-center pt-20 sm:pt-28 lg:pt-37.5 pb-16 sm:pb-24 lg:pb-30 gap-8 sm:gap-12 lg:gap-15">
+          <div className="flex flex-col items-center gap-2.5 w-full">
             {/* Brackets open like a curtain; headline rises between them */}
-            <div className="flex flex-row items-center gap-3">
+            <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-3 w-full">
               <span
-                className="text-light-muted dark:text-dark-muted leading-none"
+                className="text-light-muted dark:text-dark-muted leading-none shrink-0"
                 style={{
-                  fontSize: "61px", lineHeight: 1, fontWeight: 400,
+                  fontSize: "clamp(30px, 8vw, 61px)", lineHeight: 1, fontWeight: 400,
                   opacity: loaded ? undefined : 0,
                   animation: anim("bio-slide-left", "0.9s", "0.05s"),
                 }}
@@ -111,9 +111,9 @@ export default function Hero({
                 &lt;
               </span>
               <h1
-                className="text-light-text dark:text-dark-text tracking-design whitespace-nowrap"
+                className="text-light-text dark:text-dark-text tracking-design text-center whitespace-normal sm:whitespace-nowrap min-w-0"
                 style={{
-                  fontSize: "61px", lineHeight: "150%", fontWeight: 400,
+                  fontSize: "clamp(30px, 8vw, 61px)", lineHeight: "130%", fontWeight: 400,
                   opacity: loaded ? undefined : 0,
                   animation: anim("bio-fade-up", "0.9s", "0.18s"),
                 }}
@@ -121,9 +121,9 @@ export default function Hero({
                 {headline}
               </h1>
               <span
-                className="text-light-muted dark:text-dark-muted leading-none"
+                className="text-light-muted dark:text-dark-muted leading-none shrink-0"
                 style={{
-                  fontSize: "61px", lineHeight: 1, fontWeight: 400,
+                  fontSize: "clamp(30px, 8vw, 61px)", lineHeight: 1, fontWeight: 400,
                   opacity: loaded ? undefined : 0,
                   animation: anim("bio-slide-right", "0.9s", "0.05s"),
                 }}
@@ -142,12 +142,14 @@ export default function Hero({
                 scrollToProjects();
               }
             }}
-            className="inline-flex items-center justify-center rounded-sm text-[28px] tracking-design transition-all duration-200
+            className="inline-flex items-center justify-center rounded-sm tracking-design transition-all duration-200
               bg-light-text text-light-bg hover:bg-light-text/90
               dark:bg-accent-light dark:text-dark-bg dark:hover:bg-accent-light/90
               font-power"
             style={{
-              width: "228px", height: "76px",
+              width: "clamp(180px, 55vw, 228px)",
+              height: "clamp(56px, 15vw, 76px)",
+              fontSize: "clamp(20px, 5vw, 28px)",
               opacity: loaded ? undefined : 0,
               animation: anim("bio-scale-up", "0.8s", "0.38s", SP),
             }}
@@ -158,7 +160,7 @@ export default function Hero({
 
         {/* Stats row — rises as a unit after everything above is settled */}
         <div
-          className="flex flex-wrap justify-between px-18 gap-6 items-center min-h-32"
+          className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-between px-0 sm:px-8 lg:px-18 gap-8 sm:gap-6 items-center sm:min-h-32"
           style={{
             opacity: loaded ? undefined : 0,
             animation: anim("bio-fade-up", "0.8s", "0.55s"),
@@ -166,7 +168,7 @@ export default function Hero({
         >
           {fullBio && (
             <p
-              className="text-light-text dark:text-dark-text tracking-design max-w-78.5"
+              className="text-light-text dark:text-dark-text tracking-design max-w-78.5 text-center sm:text-left"
               style={{ fontSize: "14px", lineHeight: "150%" }}
             >
               {typedBio}
@@ -177,7 +179,7 @@ export default function Hero({
           {(yearsExperience > 0 || projectsCount > 0) && (
             <div className="flex flex-row items-center">
               {yearsExperience > 0 && (
-                <div className="flex flex-col items-center px-4 py-3 min-w-30">
+                <div className="flex flex-col items-center px-3 sm:px-4 py-3 min-w-24 sm:min-w-30">
                   <span
                     className="text-light-text dark:text-dark-text tracking-design font-power"
                     style={{ fontSize: "36px", lineHeight: "100%" }}
@@ -193,7 +195,7 @@ export default function Hero({
                 </div>
               )}
               {projectsCount > 0 && (
-                <div className="flex flex-col items-center px-4 py-3 min-w-30">
+                <div className="flex flex-col items-center px-3 sm:px-4 py-3 min-w-24 sm:min-w-30">
                   <span
                     className="text-light-text dark:text-dark-text tracking-design font-power"
                     style={{ fontSize: "36px", lineHeight: "100%" }}
@@ -214,7 +216,7 @@ export default function Hero({
 
         {/* Scroll indicator — last to appear, draws the eye downward */}
         <div
-          className="flex justify-center pb-8"
+          className="hidden sm:flex justify-center pb-8"
           style={{
             opacity: loaded ? undefined : 0,
             animation: anim("bio-fade-in", "0.7s", "0.75s"),

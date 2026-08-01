@@ -85,7 +85,7 @@ export default function Footer({
       ref={footerRef}
       className="bg-[#08080E] border-t border-[#FFFCF2] w-full"
     >
-      <div className="flex flex-col items-center justify-center py-12 gap-6 w-full">
+      <div className="flex flex-col items-center justify-center py-10 sm:py-12 px-6 gap-6 w-full">
         {/* Contact heading */}
         <div
           className="flex flex-col items-center gap-2"
@@ -142,7 +142,7 @@ export default function Footer({
 
       {/* Copyright — last to arrive */}
       <div
-        className="flex items-center justify-center py-8"
+        className="flex items-center justify-center py-6 sm:py-8 px-6"
         style={{
           borderTop: "1px solid rgba(255,252,242,0.1)",
           opacity: visible ? undefined : 0,

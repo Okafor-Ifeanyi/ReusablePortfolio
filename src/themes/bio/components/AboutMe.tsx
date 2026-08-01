@@ -67,11 +67,11 @@ export default function AboutMe({
       id="about"
       className="bg-light-bg dark:bg-dark-bg transition-colors duration-300 py-16"
     >
-      <div className="max-w-360 mx-auto px-15">
+      <div className="max-w-360 mx-auto px-6 sm:px-10 lg:px-15">
         <h2
-          className="text-light-text dark:text-dark-text tracking-design mb-8"
+          className="text-light-text dark:text-dark-text tracking-design mb-6 sm:mb-8"
           style={{
-            fontSize: "48px", lineHeight: "150%", fontWeight: 400,
+            fontSize: "clamp(28px, 7vw, 48px)", lineHeight: "150%", fontWeight: 400,
             opacity: visible ? undefined : 0,
             animation: a("bio-fade-up", "0.7s", "0s"),
           }}
@@ -79,16 +79,15 @@ export default function AboutMe({
           &#123;About Me&#125;
         </h2>
 
-        <div className="relative w-full px-4" style={{ minHeight: "633px" }}>
+        <div className="relative w-full px-0 sm:px-4 lg:min-h-[633px]">
           <div className="flex flex-col lg:flex-row gap-8 w-full">
 
             {/* Left column */}
-            <div className="flex flex-col gap-6" style={{ width: "316px", flexShrink: 0 }}>
+            <div className="flex flex-col gap-6 w-full lg:w-[316px] shrink-0">
               {/* Photo — wipes in from left like a curtain pull */}
               <div
-                className="relative rounded-lg overflow-hidden bg-light-muted/20 dark:bg-dark-muted/20"
+                className="relative rounded-lg overflow-hidden bg-light-muted/20 dark:bg-dark-muted/20 w-full max-w-[316px] mx-auto lg:mx-0 h-[280px] sm:h-[321px]"
                 style={{
-                  width: "316px", height: "321px",
                   opacity: visible ? undefined : 0,
                   animation: a("bio-clip-wipe", "1.1s", "0.1s"),
                 }}
@@ -109,7 +108,7 @@ export default function AboutMe({
 
               {/* Stats — count up after photo reveals */}
               <div
-                className="flex flex-row justify-center items-center gap-4 h-1/2"
+                className="flex flex-row justify-center items-start gap-6 sm:gap-4"
                 style={{
                   opacity: visible ? undefined : 0,
                   animation: a("bio-fade-up", "0.7s", "0.45s"),
@@ -119,29 +118,29 @@ export default function AboutMe({
                   <div className="flex flex-col">
                     <span
                       className="text-light-text dark:text-dark-text font-power tracking-design"
-                      style={{ fontSize: "65px", lineHeight: "150%", marginBottom: "-18px" }}
+                      style={{ fontSize: "clamp(40px, 12vw, 65px)", lineHeight: "115%" }}
                     >
                       {yearsCount}+
                     </span>
                     <span
                       className="text-light-muted dark:text-dark-muted tracking-design"
-                      style={{ fontSize: "27px", lineHeight: "150%" }}
+                      style={{ fontSize: "clamp(18px, 5vw, 27px)", lineHeight: "150%" }}
                     >
                       Years
                     </span>
                   </div>
                 )}
                 {projectsCount > 0 && (
-                  <div className="flex flex-col ml-4">
+                  <div className="flex flex-col sm:ml-4">
                     <span
                       className="text-light-text dark:text-dark-text font-power tracking-design"
-                      style={{ fontSize: "65px", lineHeight: "150%", marginBottom: "-18px" }}
+                      style={{ fontSize: "clamp(40px, 12vw, 65px)", lineHeight: "115%" }}
                     >
                       {projectsCount2}+
                     </span>
                     <span
                       className="text-light-muted dark:text-dark-muted tracking-design"
-                      style={{ fontSize: "27px", lineHeight: "150%" }}
+                      style={{ fontSize: "clamp(18px, 5vw, 27px)", lineHeight: "150%" }}
                     >
                       Projects
                     </span>
@@ -154,10 +153,10 @@ export default function AboutMe({
             <div className="flex flex-col justify-center flex-1 gap-6">
               {/* Pull quote — words cascade in one by one */}
               {words.length > 0 && (
-                <div className="flex items-center justify-center" style={{ minHeight: "321px" }}>
+                <div className="flex items-center justify-center py-4 lg:py-0 lg:min-h-[321px]">
                   <blockquote
-                    className="w-3/4 text-light-text dark:text-dark-text font-power"
-                    style={{ fontSize: "clamp(28px, 4vw, 48px)", lineHeight: "150%", fontWeight: 400 }}
+                    className="w-full lg:w-3/4 text-light-text dark:text-dark-text font-power"
+                    style={{ fontSize: "clamp(22px, 6vw, 48px)", lineHeight: "150%", fontWeight: 400 }}
                   >
                     &ldquo;
                     {words.map((word, i) => (
@@ -182,23 +181,22 @@ export default function AboutMe({
               {/* Bio card — scales up after the quote lands */}
               {bio && (
                 <div
-                  className="rounded-lg border border-light-text dark:border-dark-border/30 bg-light-bg dark:bg-dark-bg p-8 flex flex-col gap-4"
+                  className="rounded-lg border border-light-text dark:border-dark-border/30 bg-light-bg dark:bg-dark-bg p-6 sm:p-8 flex flex-col gap-4 lg:min-h-[260px]"
                   style={{
-                    minHeight: "260px",
                     opacity: visible ? undefined : 0,
                     animation: a("bio-scale-up", "0.9s", `${0.25 + words.length * 0.045}s`),
                   }}
                 >
                   <p
                     className="text-light-muted dark:text-dark-muted font-power flex-1"
-                    style={{ fontSize: "20px", lineHeight: "150%", fontWeight: 400 }}
+                    style={{ fontSize: "clamp(16px, 4vw, 20px)", lineHeight: "150%", fontWeight: 400 }}
                   >
                     {bio}
                   </p>
                   <div className="flex justify-end">
                     <cite
                       className="text-light-text dark:text-dark-text not-italic font-power tracking-design"
-                      style={{ fontSize: "22px", lineHeight: "150%" }}
+                      style={{ fontSize: "clamp(16px, 4vw, 22px)", lineHeight: "150%" }}
                     >
                       -{name}
                     </cite>

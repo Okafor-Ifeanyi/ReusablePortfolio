@@ -33,7 +33,7 @@ const LOTA_SECTIONS: Section[] = [
 
 export default async function DashboardPage() {
   const portfolio = await getCurrentPortfolio()
-  if (!portfolio) redirect('/login')
+  if (!portfolio) redirect('/onboarding')
 
   const isLota = portfolio.theme.slug === 'lota'
   const sections = isLota ? LOTA_SECTIONS : BIO_SECTIONS

@@ -26,11 +26,11 @@ export default function Experience({ experiences }: { experiences: BioExperience
       id="experience"
       className="bg-light-bg dark:bg-dark-bg transition-colors duration-300 py-16"
     >
-      <div className="max-w-360 mx-auto px-15">
+      <div className="max-w-360 mx-auto px-6 sm:px-10 lg:px-15">
         <h2
-          className="text-light-text dark:text-dark-text mb-8"
+          className="text-light-text dark:text-dark-text mb-6 sm:mb-8"
           style={{
-            fontSize: "48px", lineHeight: "58px", fontWeight: 400,
+            fontSize: "clamp(28px, 7vw, 48px)", lineHeight: "130%", fontWeight: 400,
             opacity: visible ? undefined : 0,
             animation: visible ? `bio-fade-up 0.7s ${E} 0s both` : "none",
           }}
@@ -38,14 +38,14 @@ export default function Experience({ experiences }: { experiences: BioExperience
           &#123;Experience&#125;
         </h2>
 
-        <div className="flex flex-col px-4">
+        <div className="flex flex-col px-0 sm:px-4">
           {experiences.map((exp, index) => {
             const dotDelay  = `${0.1 + index * 0.14}s`;
             const lineDelay = `${0.2 + index * 0.14}s`;
             const rowDelay  = `${0.1 + index * 0.14}s`;
 
             return (
-              <div key={exp.id} className="flex flex-row gap-6">
+              <div key={exp.id} className="flex flex-row gap-4 sm:gap-6">
 
                 {/* Timeline spine */}
                 <div className="flex flex-col items-center" style={{ width: "15px", flexShrink: 0 }}>
@@ -73,23 +73,23 @@ export default function Experience({ experiences }: { experiences: BioExperience
 
                 {/* Row */}
                 <div
-                  className="flex flex-row justify-between items-start gap-4 w-full"
+                  className="flex flex-col sm:flex-row sm:justify-between items-start gap-1 sm:gap-4 w-full min-w-0"
                   style={{
-                    paddingBottom: index < experiences.length - 1 ? "40px" : "0",
+                    paddingBottom: index < experiences.length - 1 ? "32px" : "0",
                     opacity: visible ? 1 : 0,
                     transform: visible ? "translateX(0)" : "translateX(-12px)",
                     transition: `opacity 0.5s ${E} ${rowDelay}, transform 0.5s ${E} ${rowDelay}`,
                   }}
                 >
                   <span
-                    className="text-light-text dark:text-dark-text font-power"
-                    style={{ fontSize: "clamp(16px, 2vw, 24px)", lineHeight: "29px", fontWeight: 400 }}
+                    className="text-light-text dark:text-dark-text font-power min-w-0"
+                    style={{ fontSize: "clamp(16px, 2vw, 24px)", lineHeight: "140%", fontWeight: 400 }}
                   >
                     {exp.company} — {exp.role}
                   </span>
                   <span
-                    className="text-light-text dark:text-dark-text font-power whitespace-nowrap"
-                    style={{ fontSize: "clamp(14px, 1.8vw, 24px)", lineHeight: "29px", fontWeight: 400 }}
+                    className="text-light-muted dark:text-dark-muted sm:text-light-text sm:dark:text-dark-text font-power whitespace-nowrap shrink-0"
+                    style={{ fontSize: "clamp(14px, 1.8vw, 24px)", lineHeight: "140%", fontWeight: 400 }}
                   >
                     {exp.period}
                   </span>

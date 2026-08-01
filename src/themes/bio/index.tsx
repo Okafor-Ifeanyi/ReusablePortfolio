@@ -118,7 +118,6 @@ function serialize(portfolio: PortfolioData) {
   })();
   const yearsExperience = portfolio.hero?.yearsExperience ?? computed;
 
-  console.log(portfolio.user.fullName)
   return {
     fullName: portfolio.user.fullName ?? portfolio.user.username,
     hero,

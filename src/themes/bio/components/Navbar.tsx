@@ -19,9 +19,9 @@ export default function Navbar({ name }: { name: string | null }) {
         animation: loaded ? `bio-fade-in 0.5s ${E} both` : "none",
       }}
     >
-      <nav className="max-w-360 mx-auto px-15 py-5.5 flex items-center justify-between">
+      <nav className="max-w-360 mx-auto px-6 sm:px-10 lg:px-15 py-4 lg:py-5.5 flex items-center justify-between gap-4">
         <span
-          className="text-[24px] tracking-design text-light-text dark:text-dark-text font-power leading-[150%]"
+          className="text-[18px] sm:text-[20px] lg:text-[24px] tracking-design text-light-text dark:text-dark-text font-power leading-[150%] min-w-0 truncate"
           style={{
             opacity: loaded ? undefined : 0,
             animation: loaded ? `bio-slide-left 0.8s ${E} 0.1s both` : "none",
@@ -33,7 +33,7 @@ export default function Navbar({ name }: { name: string | null }) {
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className="w-7.5 h-7.5 flex items-center justify-center text-light-text dark:text-dark-text hover:opacity-70 transition-opacity"
+          className="w-7.5 h-7.5 shrink-0 flex items-center justify-center text-light-text dark:text-dark-text hover:opacity-70 transition-opacity"
           style={{
             opacity: loaded ? undefined : 0,
             animation: loaded ? `bio-slide-right 0.8s ${E} 0.15s both` : "none",

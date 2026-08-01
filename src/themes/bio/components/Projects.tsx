@@ -32,25 +32,25 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
       }}
     >
       {/* Collapsed row */}
-      <div className="flex flex-row items-center justify-between py-8 px-4 gap-4">
-        <div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 sm:py-8 px-0 sm:px-4 gap-3 sm:gap-4">
+        <div className="min-w-0">
           <h3
             className="text-light-text dark:text-dark-text group-hover:opacity-70 transition-opacity duration-200"
-            style={{ fontSize: "36px", lineHeight: "43px", fontWeight: 400 }}
+            style={{ fontSize: "clamp(24px, 6vw, 36px)", lineHeight: "130%", fontWeight: 400 }}
           >
             {project.title}
           </h3>
           {project.subtitle && (
             <p
               className="text-light-muted dark:text-dark-muted mt-1"
-              style={{ fontSize: "16px" }}
+              style={{ fontSize: "15px" }}
             >
               {truncate(project.subtitle, 50)}
             </p>
           )}
         </div>
 
-        <div className="flex flex-wrap justify-end items-center gap-2.5">
+        <div className="flex flex-wrap justify-start sm:justify-end items-center gap-2 sm:gap-2.5">
           {(expanded ? project.skills : project.skills.slice(0, 7)).map((skill) => (
             <TechTag key={skill} label={skill} />
           ))}
@@ -72,7 +72,7 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
         }`}
       >
         <div className="overflow-hidden">
-          <div className="flex flex-col md:flex-row gap-8 px-4 pt-2 pb-12">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 px-0 sm:px-4 pt-2 pb-10 sm:pb-12">
             {/* Cover image */}
             <div className="relative w-full md:w-105 aspect-video rounded-lg shrink-0 overflow-hidden border border-light-border/20 dark:border-dark-border/20">
               {project.coverImageUrl ? (
@@ -108,7 +108,7 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
               {project.description && (
                 <p
                   className="text-light-muted dark:text-dark-muted"
-                  style={{ fontSize: "20px", lineHeight: "150%", fontWeight: 300 }}
+                  style={{ fontSize: "clamp(16px, 4vw, 20px)", lineHeight: "150%", fontWeight: 300 }}
                 >
                   {project.description}
                 </p>
@@ -145,15 +145,15 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
                 )}
               </div>
 
-              <div className="flex items-center gap-4 mt-2">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-2">
                 {project.url && (
                   <a
                     href={project.url}
                     onClick={(e) => e.stopPropagation()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-3 bg-light-text dark:bg-dark-text text-light-bg dark:text-dark-bg rounded-sm font-power transition-opacity hover:opacity-80"
-                    style={{ fontSize: "18px" }}
+                    className="inline-flex items-center justify-center px-5 sm:px-6 py-3 bg-light-text dark:bg-dark-text text-light-bg dark:text-dark-bg rounded-sm font-power transition-opacity hover:opacity-80"
+                    style={{ fontSize: "clamp(15px, 4vw, 18px)" }}
                   >
                     Live Product
                   </a>
@@ -164,8 +164,8 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
                     onClick={(e) => e.stopPropagation()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-3 border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-sm font-power transition-opacity hover:opacity-70"
-                    style={{ fontSize: "18px" }}
+                    className="inline-flex items-center justify-center px-5 sm:px-6 py-3 border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-sm font-power transition-opacity hover:opacity-70"
+                    style={{ fontSize: "clamp(15px, 4vw, 18px)" }}
                   >
                     Source Code
                   </a>
@@ -200,12 +200,12 @@ export default function Projects({ projects }: { projects: BioProject[] }) {
       id="projects"
       className="bg-light-bg dark:bg-dark-bg transition-colors duration-300 py-16"
     >
-      <div className="max-w-360 mx-auto px-15">
-        <div className="mb-8">
+      <div className="max-w-360 mx-auto px-6 sm:px-10 lg:px-15">
+        <div className="mb-6 sm:mb-8">
           <h2
             className="text-light-text dark:text-dark-text tracking-design"
             style={{
-              fontSize: "48px", lineHeight: "150%", fontWeight: 400,
+              fontSize: "clamp(28px, 7vw, 48px)", lineHeight: "150%", fontWeight: 400,
               opacity: visible ? undefined : 0,
               animation: visible ? `bio-fade-up 0.7s ${E} 0s both` : "none",
             }}
@@ -214,7 +214,7 @@ export default function Projects({ projects }: { projects: BioProject[] }) {
           </h2>
         </div>
 
-        <div className="flex flex-col px-4">
+        <div className="flex flex-col px-0 sm:px-4">
           {projects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} visible={visible} />
           ))}

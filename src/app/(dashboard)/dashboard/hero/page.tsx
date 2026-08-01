@@ -4,7 +4,7 @@ import HeroForm from './HeroForm'
 
 export default async function HeroPage() {
   const portfolio = await getCurrentPortfolio()
-  if (!portfolio) redirect('/login')
+  if (!portfolio) redirect('/onboarding')
 
   return (
     <div>

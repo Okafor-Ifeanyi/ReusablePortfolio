@@ -5,6 +5,7 @@ import { upsertHero } from '@/lib/actions/hero'
 import type { PortfolioData } from '@/lib/queries/portfolio'
 import { SubmitButton } from '@/app/(dashboard)/components/SubmitButton'
 import { ImageUpload } from '@/app/(dashboard)/components/ImageUpload'
+import { FileUpload } from '@/app/(dashboard)/components/FileUpload'
 import { useFormDraft } from '@/lib/hooks/useFormDraft'
 import { DraftBanner } from '@/app/(dashboard)/components/DraftBanner'
 
@@ -65,6 +66,14 @@ export default function HeroForm({ hero }: { hero: Hero }) {
           label="Avatar"
           aspectRatio="square"
         />
+      </div>
+
+      <div>
+        <label className={label}>CV / Résumé</label>
+        <FileUpload name="cvUrl" defaultValue={hero?.cvUrl} label="CV" />
+        <p className="text-xs text-gray-400 mt-1">
+          PDF or Word, up to 10MB. Adds a &ldquo;Download CV&rdquo; button to your hero — leave empty to hide it.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

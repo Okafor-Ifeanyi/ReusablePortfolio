@@ -14,6 +14,18 @@ type Skill = PortfolioData['skills'][number]
 const input = 'w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent'
 const label = 'block text-sm font-medium text-gray-700 mb-1'
 const PROJECT_TYPES = ['Solo', 'Lead Engineer', 'Collaboration', 'Open Source']
+const PROJECT_TYPES_ID = 'project-type-suggestions'
+
+/** Suggestion list for the project-type inputs — free text is still allowed. */
+function ProjectTypeOptions() {
+  return (
+    <datalist id={PROJECT_TYPES_ID}>
+      {PROJECT_TYPES.map((t) => (
+        <option key={t} value={t} />
+      ))}
+    </datalist>
+  )
+}
 
 function AddProjectForm({
   availableSkills,
@@ -63,7 +75,8 @@ function AddProjectForm({
 
       <div>
         <label className={label}>Description</label>
-        <textarea name="description" rows={3} defaultValue={field('description', '')} placeholder="What does it do?" className={`${input} resize-none`} />
+        <textarea name="description" rows={4} defaultValue={field('description', '')} placeholder={"What does it do?\nOne point per line"} className={`${input} resize-none`} />
+        <p className="text-xs text-gray-400 mt-1">Each line becomes its own bullet point.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -84,12 +97,14 @@ function AddProjectForm({
         </div>
         <div>
           <label className={label}>Project type</label>
-          <select name="projectType" defaultValue={field('projectType', '')} className={input}>
-            <option value="">— select —</option>
-            {PROJECT_TYPES.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+          <input
+            name="projectType"
+            list={PROJECT_TYPES_ID}
+            defaultValue={field('projectType', '')}
+            placeholder="Pick one or type your own"
+            className={input}
+          />
+          <p className="text-xs text-gray-400 mt-1">Suggestions only — any value works.</p>
         </div>
       </div>
 
@@ -166,7 +181,8 @@ function EditProjectForm({
 
       <div>
         <label className={label}>Description</label>
-        <textarea name="description" rows={3} defaultValue={project.description ?? ''} placeholder="What does it do?" className={`${input} resize-none`} />
+        <textarea name="description" rows={4} defaultValue={project.description ?? ''} placeholder={"What does it do?\nOne point per line"} className={`${input} resize-none`} />
+        <p className="text-xs text-gray-400 mt-1">Each line becomes its own bullet point.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -187,10 +203,14 @@ function EditProjectForm({
         </div>
         <div>
           <label className={label}>Project type</label>
-          <select name="projectType" defaultValue={project.projectType ?? ''} className={input}>
-            <option value="">— select —</option>
-            {PROJECT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
+          <input
+            name="projectType"
+            list={PROJECT_TYPES_ID}
+            defaultValue={project.projectType ?? ''}
+            placeholder="Pick one or type your own"
+            className={input}
+          />
+          <p className="text-xs text-gray-400 mt-1">Suggestions only — any value works.</p>
         </div>
       </div>
 
@@ -240,6 +260,9 @@ export default function ProjectsSection({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Rendered once — the add and edit forms can both be open, and the id must stay unique */}
+      <ProjectTypeOptions />
+
       {projects.length === 0 && !adding && (
         <p className="text-sm text-gray-400 py-4">No projects added yet.</p>
       )}

@@ -96,6 +96,7 @@ model Hero {
   openToWork       Boolean   @default(false) @map("open_to_work")
   ctaLabel         String?   @map("cta_label") /// e.g. Download CV
   ctaUrl           String?   @map("cta_url")
+  cvUrl            String?   @map("cv_url") /// Uploaded CV/résumé — powers the "Download CV" button
   yearsExperience  Int?      @map("years_experience") /// Manual override shown as "N+ years"
   updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at")
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { truncate } from "../../../lib/utils";
+import { truncate, toDownloadUrl } from "../../../lib/utils";
 import { useTheme } from "./theme.provider";
 import type { BioHero } from "../index";
 
@@ -44,6 +44,7 @@ export default function Hero({
   const bio       = hero?.bio       ?? null;
   const ctaLabel  = hero?.ctaLabel  ?? "View Projects";
   const ctaHref   = hero?.ctaUrl    ?? "#projects";
+  const cvUrl     = hero?.cvUrl     ?? null;
 
   const fullBio = bio ? truncate(bio, 100) : null;
   const [typedBio, setTypedBio] = useState("");
@@ -133,29 +134,54 @@ export default function Hero({
             </div>
           </div>
 
-          {/* CTA — springs into place after the headline settles */}
-          <a
-            href={ctaHref}
-            onClick={(e) => {
-              if (ctaHref === "#projects") {
-                e.preventDefault();
-                scrollToProjects();
-              }
-            }}
-            className="inline-flex items-center justify-center rounded-sm tracking-design transition-all duration-200
-              bg-light-text text-light-bg hover:bg-light-text/90
-              dark:bg-accent-light dark:text-dark-bg dark:hover:bg-accent-light/90
-              font-power"
+          {/* CTAs — spring into place after the headline settles */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 md:pt-4 sm:gap-6"
             style={{
-              width: "clamp(180px, 55vw, 228px)",
-              height: "clamp(56px, 15vw, 76px)",
-              fontSize: "clamp(20px, 5vw, 28px)",
               opacity: loaded ? undefined : 0,
               animation: anim("bio-scale-up", "0.8s", "0.38s", SP),
             }}
           >
-            {ctaLabel}
-          </a>
+            <a
+              href={ctaHref}
+              onClick={(e) => {
+                if (ctaHref === "#projects") {
+                  e.preventDefault();
+                  scrollToProjects();
+                }
+              }}
+              className="inline-flex items-center justify-center rounded-sm tracking-design transition-all duration-200
+                bg-light-text text-light-bg hover:bg-light-text/90
+                dark:bg-accent-light dark:text-dark-bg dark:hover:bg-accent-light/90
+                font-power"
+              style={{
+                width: "clamp(180px, 55vw, 228px)",
+                height: "clamp(56px, 15vw, 76px)",
+                fontSize: "clamp(20px, 5vw, 28px)",
+              }}
+            >
+              {ctaLabel}
+            </a>
+
+            {cvUrl && (
+              <a
+                href={toDownloadUrl(cvUrl)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-sm tracking-design transition-all duration-200
+                  border border-light-text text-light-text hover:bg-light-text/5
+                  dark:border-accent-light dark:text-accent-light dark:hover:bg-accent-light/10
+                  font-power"
+                style={{
+                  width: "clamp(180px, 55vw, 228px)",
+                  height: "clamp(56px, 15vw, 76px)",
+                  fontSize: "clamp(20px, 5vw, 28px)",
+                }}
+              >
+                Download CV
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Stats row — rises as a unit after everything above is settled */}

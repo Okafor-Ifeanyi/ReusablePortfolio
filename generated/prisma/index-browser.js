@@ -179,6 +179,7 @@ exports.Prisma.HeroScalarFieldEnum = {
   openToWork: 'openToWork',
   ctaLabel: 'ctaLabel',
   ctaUrl: 'ctaUrl',
+  cvUrl: 'cvUrl',
   yearsExperience: 'yearsExperience',
   updatedAt: 'updatedAt'
 };

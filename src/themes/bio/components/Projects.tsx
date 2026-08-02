@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { truncate } from "@/lib/utils";
+import { truncate, toBulletPoints } from "@/lib/utils";
 import type { BioProject } from "../index";
 
 const E = "cubic-bezier(0.16,1,0.3,1)";
@@ -19,6 +19,7 @@ function TechTag({ label }: { label: string }) {
 
 function ProjectCard({ project, index, visible }: { project: BioProject; index: number; visible: boolean }) {
   const [expanded, setExpanded] = useState(false);
+  const points = project.description ? toBulletPoints(project.description) : [];
 
   return (
     <div
@@ -105,13 +106,24 @@ function ProjectCard({ project, index, visible }: { project: BioProject; index: 
 
             {/* Details */}
             <div className="flex flex-col gap-4 justify-center flex-1">
-              {project.description && (
-                <p
-                  className="text-light-muted dark:text-dark-muted"
-                  style={{ fontSize: "clamp(16px, 4vw, 20px)", lineHeight: "150%", fontWeight: 300 }}
-                >
-                  {project.description}
-                </p>
+              {points.length > 0 && (
+                points.length === 1 ? (
+                  <p
+                    className="text-light-muted dark:text-dark-muted"
+                    style={{ fontSize: "clamp(16px, 4vw, 20px)", lineHeight: "150%", fontWeight: 300 }}
+                  >
+                    {points[0]}
+                  </p>
+                ) : (
+                  <ul
+                    className="list-disc pl-5 flex flex-col gap-2 text-light-muted dark:text-dark-muted marker:text-light-text/50 dark:marker:text-dark-text/50"
+                    style={{ fontSize: "clamp(16px, 4vw, 20px)", lineHeight: "150%", fontWeight: 300 }}
+                  >
+                    {points.map((point, i) => (
+                      <li key={i}>{point}</li>
+                    ))}
+                  </ul>
+                )
               )}
 
               {project.skills.length > 0 && (

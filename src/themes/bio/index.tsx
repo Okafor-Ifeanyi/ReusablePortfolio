@@ -19,6 +19,7 @@ export type BioHero = {
   openToWork: boolean;
   ctaLabel: string | null;
   ctaUrl: string | null;
+  cvUrl: string | null;
 } | null;
 
 export type BioExperience = {
@@ -105,6 +106,7 @@ function serialize(portfolio: PortfolioData) {
         openToWork: portfolio.hero.openToWork,
         ctaLabel: portfolio.hero.ctaLabel,
         ctaUrl: portfolio.hero.ctaUrl,
+        cvUrl: portfolio.hero.cvUrl,
       }
     : null;
 

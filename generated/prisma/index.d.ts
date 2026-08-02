@@ -6821,6 +6821,7 @@ export namespace Prisma {
     openToWork: boolean | null
     ctaLabel: string | null
     ctaUrl: string | null
+    cvUrl: string | null
     yearsExperience: number | null
     updatedAt: Date | null
   }
@@ -6836,6 +6837,7 @@ export namespace Prisma {
     openToWork: boolean | null
     ctaLabel: string | null
     ctaUrl: string | null
+    cvUrl: string | null
     yearsExperience: number | null
     updatedAt: Date | null
   }
@@ -6851,6 +6853,7 @@ export namespace Prisma {
     openToWork: number
     ctaLabel: number
     ctaUrl: number
+    cvUrl: number
     yearsExperience: number
     updatedAt: number
     _all: number
@@ -6876,6 +6879,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    cvUrl?: true
     yearsExperience?: true
     updatedAt?: true
   }
@@ -6891,6 +6895,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    cvUrl?: true
     yearsExperience?: true
     updatedAt?: true
   }
@@ -6906,6 +6911,7 @@ export namespace Prisma {
     openToWork?: true
     ctaLabel?: true
     ctaUrl?: true
+    cvUrl?: true
     yearsExperience?: true
     updatedAt?: true
     _all?: true
@@ -7008,6 +7014,7 @@ export namespace Prisma {
     openToWork: boolean
     ctaLabel: string | null
     ctaUrl: string | null
+    cvUrl: string | null
     yearsExperience: number | null
     updatedAt: Date
     _count: HeroCountAggregateOutputType | null
@@ -7042,6 +7049,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    cvUrl?: boolean
     yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
@@ -7058,6 +7066,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    cvUrl?: boolean
     yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
@@ -7074,6 +7083,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    cvUrl?: boolean
     yearsExperience?: boolean
     updatedAt?: boolean
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
@@ -7090,11 +7100,12 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: boolean
     ctaUrl?: boolean
+    cvUrl?: boolean
     yearsExperience?: boolean
     updatedAt?: boolean
   }
 
-  export type HeroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "headline" | "subheadline" | "bio" | "avatarUrl" | "location" | "openToWork" | "ctaLabel" | "ctaUrl" | "yearsExperience" | "updatedAt", ExtArgs["result"]["hero"]>
+  export type HeroOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "portfolioId" | "headline" | "subheadline" | "bio" | "avatarUrl" | "location" | "openToWork" | "ctaLabel" | "ctaUrl" | "cvUrl" | "yearsExperience" | "updatedAt", ExtArgs["result"]["hero"]>
   export type HeroInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     portfolio?: boolean | PortfolioDefaultArgs<ExtArgs>
   }
@@ -7127,6 +7138,10 @@ export namespace Prisma {
        */
       ctaLabel: string | null
       ctaUrl: string | null
+      /**
+       * Uploaded CV/résumé — powers the "Download CV" button
+       */
+      cvUrl: string | null
       /**
        * Manual override shown as "N+ years"
        */
@@ -7566,6 +7581,7 @@ export namespace Prisma {
     readonly openToWork: FieldRef<"Hero", 'Boolean'>
     readonly ctaLabel: FieldRef<"Hero", 'String'>
     readonly ctaUrl: FieldRef<"Hero", 'String'>
+    readonly cvUrl: FieldRef<"Hero", 'String'>
     readonly yearsExperience: FieldRef<"Hero", 'Int'>
     readonly updatedAt: FieldRef<"Hero", 'DateTime'>
   }
@@ -16002,6 +16018,7 @@ export namespace Prisma {
     openToWork: 'openToWork',
     ctaLabel: 'ctaLabel',
     ctaUrl: 'ctaUrl',
+    cvUrl: 'cvUrl',
     yearsExperience: 'yearsExperience',
     updatedAt: 'updatedAt'
   };
@@ -16539,6 +16556,7 @@ export namespace Prisma {
     openToWork?: BoolFilter<"Hero"> | boolean
     ctaLabel?: StringNullableFilter<"Hero"> | string | null
     ctaUrl?: StringNullableFilter<"Hero"> | string | null
+    cvUrl?: StringNullableFilter<"Hero"> | string | null
     yearsExperience?: IntNullableFilter<"Hero"> | number | null
     updatedAt?: DateTimeFilter<"Hero"> | Date | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
@@ -16555,6 +16573,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaUrl?: SortOrderInput | SortOrder
+    cvUrl?: SortOrderInput | SortOrder
     yearsExperience?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
     portfolio?: PortfolioOrderByWithRelationInput
@@ -16574,6 +16593,7 @@ export namespace Prisma {
     openToWork?: BoolFilter<"Hero"> | boolean
     ctaLabel?: StringNullableFilter<"Hero"> | string | null
     ctaUrl?: StringNullableFilter<"Hero"> | string | null
+    cvUrl?: StringNullableFilter<"Hero"> | string | null
     yearsExperience?: IntNullableFilter<"Hero"> | number | null
     updatedAt?: DateTimeFilter<"Hero"> | Date | string
     portfolio?: XOR<PortfolioScalarRelationFilter, PortfolioWhereInput>
@@ -16590,6 +16610,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaUrl?: SortOrderInput | SortOrder
+    cvUrl?: SortOrderInput | SortOrder
     yearsExperience?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
     _count?: HeroCountOrderByAggregateInput
@@ -16613,6 +16634,7 @@ export namespace Prisma {
     openToWork?: BoolWithAggregatesFilter<"Hero"> | boolean
     ctaLabel?: StringNullableWithAggregatesFilter<"Hero"> | string | null
     ctaUrl?: StringNullableWithAggregatesFilter<"Hero"> | string | null
+    cvUrl?: StringNullableWithAggregatesFilter<"Hero"> | string | null
     yearsExperience?: IntNullableWithAggregatesFilter<"Hero"> | number | null
     updatedAt?: DateTimeWithAggregatesFilter<"Hero"> | Date | string
   }
@@ -17490,6 +17512,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    cvUrl?: string | null
     yearsExperience?: number | null
     updatedAt?: Date | string
     portfolio: PortfolioCreateNestedOneWithoutHeroInput
@@ -17506,6 +17529,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    cvUrl?: string | null
     yearsExperience?: number | null
     updatedAt?: Date | string
   }
@@ -17520,6 +17544,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     portfolio?: PortfolioUpdateOneRequiredWithoutHeroNestedInput
@@ -17536,6 +17561,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17551,6 +17577,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    cvUrl?: string | null
     yearsExperience?: number | null
     updatedAt?: Date | string
   }
@@ -17565,6 +17592,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17580,6 +17608,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18523,6 +18552,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    cvUrl?: SortOrder
     yearsExperience?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18542,6 +18572,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    cvUrl?: SortOrder
     yearsExperience?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18557,6 +18588,7 @@ export namespace Prisma {
     openToWork?: SortOrder
     ctaLabel?: SortOrder
     ctaUrl?: SortOrder
+    cvUrl?: SortOrder
     yearsExperience?: SortOrder
     updatedAt?: SortOrder
   }
@@ -20166,6 +20198,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    cvUrl?: string | null
     yearsExperience?: number | null
     updatedAt?: Date | string
   }
@@ -20180,6 +20213,7 @@ export namespace Prisma {
     openToWork?: boolean
     ctaLabel?: string | null
     ctaUrl?: string | null
+    cvUrl?: string | null
     yearsExperience?: number | null
     updatedAt?: Date | string
   }
@@ -20465,6 +20499,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20479,6 +20514,7 @@ export namespace Prisma {
     openToWork?: BoolFieldUpdateOperationsInput | boolean
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cvUrl?: NullableStringFieldUpdateOperationsInput | string | null
     yearsExperience?: NullableIntFieldUpdateOperationsInput | number | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

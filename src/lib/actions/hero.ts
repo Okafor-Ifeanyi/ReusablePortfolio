@@ -31,6 +31,7 @@ export async function upsertHero(formData: FormData) {
     openToWork: formData.get('openToWork') === 'on',
     ctaLabel: (formData.get('ctaLabel') as string) || null,
     ctaUrl: (formData.get('ctaUrl') as string) || null,
+    cvUrl: (formData.get('cvUrl') as string) || null,
     yearsExperience: yearsRaw ? parseInt(yearsRaw, 10) : null,
   }
 

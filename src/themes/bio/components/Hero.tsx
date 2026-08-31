@@ -1,12 +1,18 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { truncate, toDownloadUrl } from "../../../lib/utils";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { truncate, toDownloadUrl, splitLines } from "../../../lib/utils";
 import { useTheme } from "./theme.provider";
 import type { BioHero } from "../index";
 
 const E  = "cubic-bezier(0.16,1,0.3,1)";
 const SP = "cubic-bezier(0.34,1.4,0.64,1)";
+
+/* Curtain cycle: a new headline every CYCLE_MS, with the curtains taking
+   CURTAIN_MS to sweep closed and the same to sweep back open. */
+const CYCLE_MS   = 3000;
+const CURTAIN_MS = 550;
+const CURTAIN_E  = "cubic-bezier(0.65,0,0.35,1)";
 
 export default function Hero({
   hero,
@@ -40,7 +46,62 @@ export default function Hero({
   const lineColor = isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
   const spotColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
 
-  const headline  = hero?.headline  ?? "Fullstack Developer";
+  // One headline per line — a single line just sits there, no cycling
+  const headlines = splitLines(hero?.headline);
+  const rotating  = headlines.length > 1 ? headlines : [headlines[0] ?? "Fullstack Developer"];
+
+  const [index,  setIndex]  = useState(0);
+  const [closed, setClosed] = useState(false);
+  const rowRef      = useRef<HTMLDivElement>(null);
+  const leftRef     = useRef<HTMLSpanElement>(null);
+  const rightRef    = useRef<HTMLSpanElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const [travel, setTravel] = useState({ left: 0, right: 0 });
+
+  /* How far each curtain must slide to meet at the headline's centre. Measured
+     from the live layout so it stays correct across breakpoints and font sizes,
+     and only while open — measuring mid-sweep would compound the offsets. */
+  useLayoutEffect(() => {
+    const measure = () => {
+      if (closed) return;
+      const head = headlineRef.current, l = leftRef.current, r = rightRef.current;
+      if (!head || !l || !r) return;
+      const h = head.getBoundingClientRect();
+      const centre = h.left + h.width / 2;
+      const next = {
+        left:  Math.max(0, centre - l.getBoundingClientRect().right),
+        right: Math.max(0, r.getBoundingClientRect().left - centre),
+      };
+      // Bail on no-op updates so an observer callback can't re-trigger itself
+      setTravel((prev) =>
+        prev.left === next.left && prev.right === next.right ? prev : next
+      );
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    if (rowRef.current) observer.observe(rowRef.current);
+    window.addEventListener("resize", measure);
+    return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
+  }, [closed, rotating.length]);
+
+  /* Close → swap headline while hidden → open again */
+  useEffect(() => {
+    if (rotating.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let swapTimer: ReturnType<typeof setTimeout>;
+    const cycle = setInterval(() => {
+      setClosed(true);
+      swapTimer = setTimeout(() => {
+        setIndex((i) => (i + 1) % rotating.length);
+        setClosed(false);
+      }, CURTAIN_MS);
+    }, CYCLE_MS);
+
+    return () => { clearInterval(cycle); clearTimeout(swapTimer); };
+  }, [rotating.length]);
+
   const bio       = hero?.bio       ?? null;
   const ctaLabel  = hero?.ctaLabel  ?? "View Projects";
   const ctaHref   = hero?.ctaUrl    ?? "#projects";
@@ -72,7 +133,7 @@ export default function Hero({
       className="relative overflow-hidden bg-light-bg dark:bg-dark-bg transition-colors duration-300"
       style={{ "--mx": "-500px", "--my": "-500px" } as React.CSSProperties}
     >
-      <div className="relative max-w-360 mx-6 sm:mx-10 lg:mx-15">
+      <div className="relative max-w-360 mx-auto px-6 sm:px-10 lg:px-15">
         {/* Interactive grid */}
         <div
           aria-hidden
@@ -99,8 +160,11 @@ export default function Hero({
         {/* Main hero content */}
         <div className="flex flex-col items-center pt-20 sm:pt-28 lg:pt-37.5 pb-16 sm:pb-24 lg:pb-30 gap-8 sm:gap-12 lg:gap-15">
           <div className="flex flex-col items-center gap-2.5 w-full">
-            {/* Brackets open like a curtain; headline rises between them */}
-            <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-3 w-full">
+            {/* Brackets close like a curtain over the headline, then reopen on the next one */}
+            <div
+              ref={rowRef}
+              className="flex flex-row items-center justify-center gap-1.5 sm:gap-3 w-full"
+            >
               <span
                 className="text-light-muted dark:text-dark-muted leading-none shrink-0"
                 style={{
@@ -109,18 +173,60 @@ export default function Hero({
                   animation: anim("bio-slide-left", "0.9s", "0.05s"),
                 }}
               >
-                &lt;
+                {/* Inner span carries the sweep, so it doesn't fight the entrance transform */}
+                <span
+                  ref={leftRef}
+                  className="inline-block"
+                  style={{
+                    transform: closed ? `translateX(${travel.left}px)` : "translateX(0)",
+                    transition: `transform ${CURTAIN_MS}ms ${CURTAIN_E}`,
+                  }}
+                >
+                  &lt;
+                </span>
               </span>
-              <h1
-                className="text-light-text dark:text-dark-text tracking-design text-center whitespace-normal sm:whitespace-nowrap min-w-0"
+
+              {/* Stacked in one grid cell so the box is as wide as the longest
+                  headline — the curtains then travel a fixed distance and the
+                  layout never jumps when the text swaps behind them. */}
+              <div
+                ref={headlineRef}
+                className="grid min-w-0"
                 style={{
-                  fontSize: "clamp(30px, 8vw, 61px)", lineHeight: "130%", fontWeight: 400,
+                  clipPath: closed ? "inset(0 50% 0 50%)" : "inset(0 0% 0 0%)",
+                  transition: `clip-path ${CURTAIN_MS}ms ${CURTAIN_E}`,
                   opacity: loaded ? undefined : 0,
                   animation: anim("bio-fade-up", "0.9s", "0.18s"),
                 }}
               >
-                {headline}
-              </h1>
+                <h1
+                  className="text-light-text dark:text-dark-text tracking-design text-center whitespace-normal sm:whitespace-nowrap min-w-0"
+                  style={{
+                    gridArea: "1 / 1",
+                    fontSize: "clamp(30px, 8vw, 61px)", lineHeight: "130%", fontWeight: 400,
+                  }}
+                >
+                  {rotating[index]}
+                </h1>
+
+                {/* Invisible siblings reserve the width of the longest headline.
+                    All of them render, including the current one — dropping any
+                    would let the box shrink when that headline is the longest. */}
+                {rotating.map((text, i) => (
+                  <span
+                    key={i}
+                    aria-hidden
+                    className="tracking-design text-center whitespace-normal sm:whitespace-nowrap invisible"
+                    style={{
+                      gridArea: "1 / 1",
+                      fontSize: "clamp(30px, 8vw, 61px)", lineHeight: "130%", fontWeight: 400,
+                    }}
+                  >
+                    {text}
+                  </span>
+                ))}
+              </div>
+
               <span
                 className="text-light-muted dark:text-dark-muted leading-none shrink-0"
                 style={{
@@ -129,7 +235,16 @@ export default function Hero({
                   animation: anim("bio-slide-right", "0.9s", "0.05s"),
                 }}
               >
-                /&gt;
+                <span
+                  ref={rightRef}
+                  className="inline-block"
+                  style={{
+                    transform: closed ? `translateX(-${travel.right}px)` : "translateX(0)",
+                    transition: `transform ${CURTAIN_MS}ms ${CURTAIN_E}`,
+                  }}
+                >
+                  /&gt;
+                </span>
               </span>
             </div>
           </div>

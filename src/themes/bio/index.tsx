@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import { ThemeProvider } from "./components/theme.provider";
 import type { ThemeProps } from "@/lib/themes";
 import type { PortfolioData } from "@/lib/queries/portfolio";
+import { sortByTimeline } from "@/lib/utils";
 import "./bio.css";
 
 // Serialisable shapes passed to client components (no Date objects)
@@ -70,19 +71,21 @@ function serialize(portfolio: PortfolioData) {
     description: e.description,
   }));
 
-  const projects: BioProject[] = portfolio.projects.map((p) => ({
-    id: p.id,
-    title: p.title,
-    subtitle: p.subtitle,
-    description: p.description,
-    url: p.url,
-    repoUrl: p.repoUrl,
-    coverImageUrl: p.coverImageUrl,
-    duration: p.duration,
-    projectType: p.projectType,
-    featured: p.featured,
-    skills: p.projectSkills.map((ps) => ps.skill.name),
-  }));
+  const projects: BioProject[] = sortByTimeline(
+    portfolio.projects.map((p) => ({
+      id: p.id,
+      title: p.title,
+      subtitle: p.subtitle,
+      description: p.description,
+      url: p.url,
+      repoUrl: p.repoUrl,
+      coverImageUrl: p.coverImageUrl,
+      duration: p.duration,
+      projectType: p.projectType,
+      featured: p.featured,
+      skills: p.projectSkills.map((ps) => ps.skill.name),
+    }))
+  );
 
   const skills: BioSkill[] = portfolio.skills.map((s) => ({
     id: s.id,

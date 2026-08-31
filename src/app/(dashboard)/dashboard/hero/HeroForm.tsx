@@ -37,7 +37,17 @@ export default function HeroForm({ hero }: { hero: Hero }) {
       <form key={revision} onSubmit={handleSubmit} onChange={onFormChange} className="flex flex-col gap-5">
       <div>
         <label className={label}>Headline <span className="text-red-400">*</span></label>
-        <input name="headline" required defaultValue={field('headline', hero?.headline ?? '')} placeholder="e.g. Fullstack Developer" className={input} />
+        <textarea
+          name="headline"
+          required
+          rows={3}
+          defaultValue={field('headline', hero?.headline ?? '')}
+          placeholder={"e.g. Fullstack Developer\nSystems Architect\nOpen Source Maintainer"}
+          className={`${input} resize-none`}
+        />
+        <p className="text-xs text-gray-400 mt-1">
+          One per line. Add several and they cycle behind the closing brackets; a single line stays put.
+        </p>
       </div>
 
       <div>

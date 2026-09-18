@@ -18,13 +18,32 @@ function TechTag({ label }: { label: string }) {
 }
 
 function ProjectCard({ project, index, visible }: { project: BioProject; index: number; visible: boolean }) {
-  const [expanded, setExpanded] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const expanded = pinned || hovered;
   const points = project.description ? toBulletPoints(project.description) : [];
+
+  useEffect(() => () => { if (hoverTimer.current) clearTimeout(hoverTimer.current); }, []);
+
+  // Hover-to-open for mouse only; touch devices keep tap-to-toggle.
+  // A short delay avoids opening every row the cursor sweeps across.
+  const handlePointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    hoverTimer.current = setTimeout(() => setHovered(true), 150);
+  };
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    setHovered(false);
+  };
 
   return (
     <div
       className="group border-b border-light-border/40 dark:border-dark-border/40 cursor-pointer"
-      onClick={() => setExpanded(!expanded)}
+      onClick={() => setPinned(!pinned)}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       style={{
         opacity: visible ? undefined : 0,
         animation: visible
